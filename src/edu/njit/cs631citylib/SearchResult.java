@@ -17,9 +17,10 @@ public class SearchResult extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	public String searchKeyword;
 	public int searchType;
-	public final int SEARCH_TYPE_ID = 1;
-	public final int SEARCH_TYPE_TITLE = 2;
-	public final int SEARCH_TYPE_PUBLISHER = 3;
+
+	public static final int SEARCH_TYPE_ID = 1;
+	public static final int SEARCH_TYPE_TITLE = 2;
+	public static final int SEARCH_TYPE_PUBLISHER = 3;
 
 	/**
 	 * Launch the application.
