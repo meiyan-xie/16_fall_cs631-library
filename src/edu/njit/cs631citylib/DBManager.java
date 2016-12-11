@@ -81,4 +81,15 @@ public class DBManager {
 			return null;
 		}
 	}
+
+	public static int execUpdate(String sql) {
+		if (dbConnection == null) return -1;
+		try {
+			Statement stmt = dbConnection.createStatement();
+			return stmt.executeUpdate(sql);			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return -1;
+		}
+	}
 }
