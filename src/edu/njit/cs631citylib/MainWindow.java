@@ -76,7 +76,9 @@ public class MainWindow {
 				if (result == null || result.size() != 1) {
 					JOptionPane.showMessageDialog(null, "Invalid card number");
 				} else {
-					System.out.println("valid");
+					Reader dialog = new Reader();
+					dialog.setModal(true);
+					dialog.setVisible(true);
 				}
 			}
 		});

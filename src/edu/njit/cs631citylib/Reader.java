@@ -1,54 +1,81 @@
 package edu.njit.cs631citylib;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
+import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 
-public class Reader extends JFrame {
+public class Reader extends JDialog {
 
-	private JPanel contentPane;
-	private JTextField textField;
+	private JTextField txtDocSearch;
+	private JRadioButton radioButton_1;
+	private JRadioButton rdbtnPublisher;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Reader frame = new Reader();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
 	 */
 	public Reader() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		DBManager m = DBManager.getInstance();
+		if (!m.connect()) {
+			JOptionPane.showMessageDialog(null, "Could not connect to database");
+			System.exit(1);
+		}
+
 		setBounds(100, 100, 450, 300);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		getContentPane().setLayout(null);
 		
-		textField = new JTextField();
-		textField.setBounds(76, 47, 159, 26);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		txtDocSearch = new JTextField();
+		txtDocSearch.setBounds(28, 47, 300, 26);
+		getContentPane().add(txtDocSearch);
+		txtDocSearch.setColumns(10);
 		
-		JRadioButton radioButton = new JRadioButton(" ");
-		radioButton.setBounds(72, 77, 63, 23);
-		contentPane.add(radioButton);
+		JRadioButton radioButton = new JRadioButton("Decoument Id ");
+		radioButton.setBounds(28, 75, 124, 23);
+		getContentPane().add(radioButton);
+		
+		radioButton_1 = new JRadioButton("Title");
+		radioButton_1.setBounds(148, 75, 68, 23);
+		getContentPane().add(radioButton_1);
+		
+		rdbtnPublisher = new JRadioButton("Publisher");
+		rdbtnPublisher.setBounds(209, 75, 95, 23);
+		getContentPane().add(rdbtnPublisher);
+		
+		JButton btnSearch = new JButton("Search");
+		btnSearch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				if (txtDocSearch.getText().length() <= 0) {
+					JOptionPane.showMessageDialog(null, "Please type card number");
+					return;
+				}
+				
+				ArrayList<ArrayList<Object>> result = m.execQuery("SELECT `id`, `title` FROM `DOCUMENT` WHERE `id` = " + txtDocSearch.getText() + ";");
+				if (result == null || result.size() != 1) {
+					JOptionPane.showMessageDialog(null, "Invalid card number");
+				} else {
+					System.out.println("valid");
+				}
+				
+			}
+		}
+	);
+		btnSearch.setBounds(327, 47, 117, 29);
+		getContentPane().add(btnSearch);
+		
+		JLabel lblNewLabel = new JLabel("City Library");
+		lblNewLabel.setForeground(Color.BLACK);
+		lblNewLabel.setBounds(180, 19, 81, 26);
+		getContentPane().add(lblNewLabel);
+		
 	}
 }
