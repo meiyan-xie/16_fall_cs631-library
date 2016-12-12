@@ -114,32 +114,45 @@ public class SearchResult extends JDialog {
 				ArrayList<ArrayList<Object>> reservedResult = new ArrayList<ArrayList<Object>>();
 				reservedResult = m.execQuery("SELECT * FROM RESERVES R WHERE `R`.`DOCID` = '" + array[rowIndex][0] + "' AND `R`.`COPYNO` = '" + array[rowIndex][4] + "' AND `R`.`LIBID` = '" + array[rowIndex][5] +"';");
 				
-				// If this copy dosen't exist in RESERVES table, then check if in the BORROW table.
+				// If this copy dosen't exist in RESERVES table, then check if in the BORROW table and not return.
 				if (reservedResult == null || reservedResult.size() <= 0) {
 					ArrayList<ArrayList<Object>> borrowResult = new ArrayList<ArrayList<Object>>();
-					borrowResult = m.execQuery("SELECT * FROM BORROWS B WHERE `B`.`DOCID` = '" + array[rowIndex][0] + "' AND `B`.`COPYNO` = '" + array[rowIndex][4] + "' AND `B`.`LIBID` = '" + array[rowIndex][5] +"';");
+					borrowResult = m.execQuery("SELECT * FROM BORROWS B WHERE `B`.`DOCID` = '" + array[rowIndex][0] + "' AND `B`.`COPYNO` = '" + array[rowIndex][4] + "' AND `B`.`LIBID` = '" + array[rowIndex][5] +"' AND `B`.`RDTIME` <> NULL;");
 				
-					// If not in the BORROW table, then can be borrowed, insert one tuple into BORROW table.
+					// If not in the BORROW table or no not return, then check whether more than 10.
 					if (borrowResult == null || borrowResult.size() <= 0) {
-						int insertedRows = m.execUpdate("INSERT INTO BORROWS(`READERID`, `DOCID`, `COPYNO`, `LIBID`, `BDTIME`, `RDTIME`) VALUES('" + readerId + "','" + array[rowIndex][0] + "','" + array[rowIndex][4] + "','" + array[rowIndex][5] +"', NOW(), NULL);");
-						if (insertedRows != 1) {
-							JOptionPane.showMessageDialog(null, "Borrow failed!");
-						}
-						JOptionPane.showMessageDialog(null, "Borrow seccess!");
+						ArrayList<ArrayList<Object>> count1 = new ArrayList<ArrayList<Object>>();
+						ArrayList<ArrayList<Object>> count2 = new ArrayList<ArrayList<Object>>();
+						count1 = m.execQuery("SELECT COUNT(*) FROM RESERVES WHERE READERID = '" + readerId + "';");
+						count2 = m.execQuery("SELECT COUNT(*) FROM BORROWS WHERE READERID = '" + readerId + "';");
+						
+						// If less than 10. then can borrow.
+						if (Integer.parseInt(((String)count1.get(0).get(0))) < 10) {
+							int insertedRows = m.execUpdate("INSERT INTO BORROWS(`READERID`, `DOCID`, `COPYNO`, `LIBID`, `BDTIME`, `RDTIME`) VALUES('" + readerId + "','" + array[rowIndex][0] + "','" + array[rowIndex][4] + "','" + array[rowIndex][5] +"', NOW(), NULL);");
+							if (insertedRows != 1) {
+								JOptionPane.showMessageDialog(null, "Borrow failed!");
+							} else {
+								JOptionPane.showMessageDialog(null, "Borrow seccess!");
+							}
+						} else {
+						// If more than 10, cannot borrow.
+							JOptionPane.showMessageDialog(null, "Cannot borrrow more than 10 doc!");
+						}	
 					} else {
-						JOptionPane.showMessageDialog(null, "Already be borrowed!");
+					// If in BORROW table and not return, then can not borrow
+						JOptionPane.showMessageDialog(null, "Already been borrowed!");
 					}
-					
 				} else {
-					// If exist, should be one tuple. no duplicate tuple.
+				// If exist in RESERVES table, should be one tuple.
 					Object[][] arr = new Object[reservedResult.size()][];
 					for (int i = 0; i < reservedResult.size(); i++) {
 					    ArrayList<Object> row = reservedResult.get(i);
 					    arr[i] = row.toArray();
 					}
 					
-					// Check if himself, then delete the tuple in RESERVE and insert one into BORROW
-					if (arr[0][1] == readerId) {
+					// Check if is himself, then delete the tuple in RESERVE and insert one into BORROW
+					// How to compare these two??
+					if (((Integer)arr[0][1]).equals(readerId)) {
 						int deletedRows = m.execUpdate("DELETE FROM RESERVES WHERE `DOCID` = '" + array[rowIndex][0] + "' AND `COPYNO` = '" + array[rowIndex][4] + "' AND `LIBID` = '" + array[rowIndex][5] +"';");
 						if (deletedRows != 1) {
 							JOptionPane.showMessageDialog(null, "Failed to remove reservation");
@@ -149,11 +162,12 @@ public class SearchResult extends JDialog {
 						int insertedRows = m.execUpdate("INSERT INTO BORROWS(`READERID`, `DOCID`, `COPYNO`, `LIBID`, `BDTIME`, `RDTIME`) VALUES('" + readerId + "','" + array[rowIndex][0] + "','" + array[rowIndex][4] + "','" + array[rowIndex][5] +"', NOW(), NULL);");
 						if (insertedRows != 1) {
 							JOptionPane.showMessageDialog(null, "Borrow failed!");
+						} else {
+							JOptionPane.showMessageDialog(null, "Borrow seccess!");
 						}
-						JOptionPane.showMessageDialog(null, "Borrow seccess!");
 					} else {
-						// If not himself reserved this copy, then check the if is expired.
-						long ts = ((Timestamp) arr[0][5]).getTime() + 86400000;
+					// If not himself reserved this copy, then check the if it is expired.
+						long ts = ((Timestamp) arr[0][5]).getTime() + 86400000; // Get the reserve time + 1 day.
 						LocalDateTime dateTime = LocalDateTime.now();
 						
 						@SuppressWarnings("deprecation")
@@ -162,47 +176,68 @@ public class SearchResult extends JDialog {
 						Timestamp sixPM = new Timestamp(dateTime.getYear(), dateTime.getMonth().getValue(), dateTime.getDayOfMonth(), 18, 0, 0, 0);
 						
 						// Check if reserved after yesterday 6pm, then check if now is after 6pm.
-						if (sixPM.getTime() - ts < 0) {
+						// BUG HERE!!! time compute.
+						if (sixPM.getTime() - ts < 0) {		
+							// If now is after 6PM, then check if more than 10.
+							if ((System.currentTimeMillis() - sixPM.getTime()) > 0) {	
+								
+								ArrayList<ArrayList<Object>> count1 = new ArrayList<ArrayList<Object>>();
+								ArrayList<ArrayList<Object>> count2 = new ArrayList<ArrayList<Object>>();
+								count1 = m.execQuery("SELECT COUNT(*) FROM RESERVES WHERE READERID = '" + readerId + "';");
+								count2 = m.execQuery("SELECT COUNT(*) FROM BORROWS WHERE READERID = '" + readerId + "';");
+								
+								// If less than 10. then can borrow. delete from RESERVE and insert into BORROW.
+								if (Integer.parseInt(((String)count1.get(0).get(0))) < 10) {
+									
+									int deletedRows = m.execUpdate("DELETE FROM RESERVES WHERE `DOCID` = '" + array[rowIndex][0] + "' AND `COPYNO` = '" + array[rowIndex][4] + "' AND `LIBID` = '" + array[rowIndex][5] +"';");
+									if (deletedRows != 1) {
+										JOptionPane.showMessageDialog(null, "Failed to remove reservation");
+										return;
+									}
+									
+									int insertedRows = m.execUpdate("INSERT INTO BORROWS(`READERID`, `DOCID`, `COPYNO`, `LIBID`, `BDTIME`, `RDTIME`) VALUES('" + readerId + "','" + array[rowIndex][0] + "','" + array[rowIndex][4] + "','" + array[rowIndex][5] +"', NOW(), NULL);");
+									if (insertedRows != 1) {
+										JOptionPane.showMessageDialog(null, "Borrow failed!");
+									} else {
+										JOptionPane.showMessageDialog(null, "Borrow seccess!");
+									}
+								} else {
+								// If more than 10, cannot borrow.
+									JOptionPane.showMessageDialog(null, "Cannot borrrow more than 10 doc!");
+								}	
+								
+							} else {
+							// If now is before 6pm, then can not borrow.
+								JOptionPane.showMessageDialog(null, "Someone reserved it!"); // FAIL!  BUG!!!! didn't go here.
+							}
+						} else {
+						// If it's reserved before yesterday 6pm, then check if more than 10.
+							ArrayList<ArrayList<Object>> count1 = new ArrayList<ArrayList<Object>>();
+							ArrayList<ArrayList<Object>> count2 = new ArrayList<ArrayList<Object>>();
+							count1 = m.execQuery("SELECT COUNT(*) FROM RESERVES WHERE READERID = '" + readerId + "';");
+							count2 = m.execQuery("SELECT COUNT(*) FROM BORROWS WHERE READERID = '" + readerId + "';");
 							
-							// If now is after 6PM, then can borrow.
-							if ((System.currentTimeMillis() - sixPM.getTime()) > 0) {
+							// If less than 10. then can borrow. delete from RESERVE and insert into BORROW.
+							if (Integer.parseInt(((String)count1.get(0).get(0))) < 10) {
+								
 								int deletedRows = m.execUpdate("DELETE FROM RESERVES WHERE `DOCID` = '" + array[rowIndex][0] + "' AND `COPYNO` = '" + array[rowIndex][4] + "' AND `LIBID` = '" + array[rowIndex][5] +"';");
 								if (deletedRows != 1) {
 									JOptionPane.showMessageDialog(null, "Failed to remove reservation");
 									return;
 								}
-
+								
 								int insertedRows = m.execUpdate("INSERT INTO BORROWS(`READERID`, `DOCID`, `COPYNO`, `LIBID`, `BDTIME`, `RDTIME`) VALUES('" + readerId + "','" + array[rowIndex][0] + "','" + array[rowIndex][4] + "','" + array[rowIndex][5] +"', NOW(), NULL);");
 								if (insertedRows != 1) {
 									JOptionPane.showMessageDialog(null, "Borrow failed!");
+								} else {
+									JOptionPane.showMessageDialog(null, "Borrow seccess!");
 								}
-								JOptionPane.showMessageDialog(null, "Borrow seccess!");
 							} else {
-								// If now is before 6pm, then can not borrow.
-								JOptionPane.showMessageDialog(null, "Someone reserved it!");
+							// If more than 10, cannot borrow.
+								JOptionPane.showMessageDialog(null, "Cannot borrrow more than 10 doc!");
 							}
-						} else {
-							// If it's reserved before yesterday 6pm, then can borrow.
-							int deletedRows = m.execUpdate("DELETE FROM RESERVES WHERE `DOCID` = '" + array[rowIndex][0] + "' AND `COPYNO` = '" + array[rowIndex][4] + "' AND `LIBID` = '" + array[rowIndex][5] +"';");
-							if (deletedRows != 1) {
-								JOptionPane.showMessageDialog(null, "Failed to remove reservation");
-								return;
-							}
-
-							int insertedRows = m.execUpdate("INSERT INTO BORROWS(`READERID`, `DOCID`, `COPYNO`, `LIBID`, `BDTIME`, `RDTIME`) VALUES('" + readerId + "','" + array[rowIndex][0] + "','" + array[rowIndex][4] + "','" + array[rowIndex][5] +"', NOW(), NULL);");
-							if (insertedRows != 1) {
-								JOptionPane.showMessageDialog(null, "Borrow failed!");
-							}
-							JOptionPane.showMessageDialog(null, "Borrow seccess!");
 						}
 					}
-					
-					
-					//int affectedRows = m.execUpdate("INSERT INTO BORROWS(`READERID`, `DOCID`, `COPYNO`, `LIBID`, `BDTIME`, `RDTIME`) VALUES(" + readerId + "," + array[rowIndex][0] + "," + array[rowIndex][4] + "," + array[rowIndex][5] +", NOW(), NULL);");
-					//if (affectedRows != 1) {
-						//JOptionPane.showMessageDialog(null, "Borrow failed!");
-				//	}
-					//JOptionPane.showMessageDialog(null, "Borrow seccess!");
 				}			
 			}
 		});
