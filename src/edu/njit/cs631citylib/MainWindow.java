@@ -76,7 +76,7 @@ public class MainWindow {
 				if (result == null || result.size() != 1) {
 					JOptionPane.showMessageDialog(null, "Invalid card number");
 				} else {
-					Reader dialog = new Reader();
+					Reader dialog = new Reader(txtCardNumber.getText());
 					dialog.setModal(true);
 					dialog.setVisible(true);
 				}
