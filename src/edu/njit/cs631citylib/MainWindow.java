@@ -99,6 +99,57 @@ public class MainWindow {
 		JSeparator separator = new JSeparator();
 		separator.setBounds(6, 119, 438, 16);
 		frmCityLibrary.getContentPane().add(separator);
+		
+		JLabel lblCityLibrary1 = new JLabel("ADMIN");
+		lblCityLibrary1.setForeground(Color.BLACK);
+		lblCityLibrary1.setBackground(Color.GRAY);
+		lblCityLibrary1.setBounds(38, 129, 71, 16);
+		frmCityLibrary.getContentPane().add(lblCityLibrary1);
+		
+		JLabel lblAdminID = new JLabel("ID");
+		lblAdminID.setBounds(38, 149, 90, 16);
+		frmCityLibrary.getContentPane().add(lblAdminID);
+		
+		JTextField txtAdminID = new JTextField();
+		txtAdminID.setBounds(125, 149, 130, 26);
+		frmCityLibrary.getContentPane().add(txtAdminID);
+		txtAdminID.setColumns(10);
+		
+		JLabel lblAdminPwd = new JLabel("Password");
+		lblAdminPwd.setBounds(38, 179, 90, 16);
+		frmCityLibrary.getContentPane().add(lblAdminPwd);
+		
+		JTextField txtAdminPwd = new JTextField();
+		txtAdminPwd.setBounds(125, 179, 130, 26);
+		frmCityLibrary.getContentPane().add(txtAdminPwd);
+		txtAdminPwd.setColumns(10);
+		
+		JButton btnAdminLogin = new JButton("Admin Login");
+		btnAdminLogin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (txtAdminID.getText().length() <= 0) {
+					JOptionPane.showMessageDialog(null, "Please type ID");
+					return;
+				}
+				if (txtAdminPwd.getText().length() <= 0) {
+					JOptionPane.showMessageDialog(null, "Please type Password");
+					return;
+				}
+
+				ArrayList<ArrayList<Object>> result = m.execQuery("SELECT 'loginID', 'password' FROM `ADMIN` WHERE loginID = '" + txtAdminID.getText() + "' AND password = '" + txtAdminPwd.getText() + "';");
+				if (result == null || result.size() != 1) {
+					System.out.println(result.size());
+					JOptionPane.showMessageDialog(null, "Invalid ID or password");
+				} else {
+					Admin dialog = new Admin();
+					dialog.setModal(true);
+					dialog.setVisible(true);
+				}
+			}
+			
+		});
+		btnAdminLogin.setBounds(280,179 , 149, 29);
+		frmCityLibrary.getContentPane().add(btnAdminLogin);
 	}
 
 }
