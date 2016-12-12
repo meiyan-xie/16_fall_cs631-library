@@ -61,15 +61,15 @@ public class SearchResult extends JDialog {
 		JButton btnReserve = new JButton("RESERVE");
 		btnReserve.setBounds(460, 505, 117, 29);
 		contentPanel.add(btnReserve);
-		String[] columnNames = {"DocId", "Tytle", "PublishDate", "PublisherId"};
+		String[] columnNames = {"DOCID", "TITLE", "PDATE", "PUBLISHERID", "COPYNO", "LIBID", "POSITION", "LIBNAME", "LIBADDRESS"};
 		ArrayList<ArrayList<Object>> searchResult = new ArrayList<ArrayList<Object>>();
 		
 		if (searchType == SEARCH_TYPE_ID) {
-			searchResult = m.execQuery("SELECT `id`, `title`, `publishdate`, `publisherid` FROM `DOCUMENT` WHERE `id` = '" + searchKeyword + "';");
+			searchResult = m.execQuery("SELECT * FROM `DOCUMENT` D, `COPY` C, `BRANCH` B WHERE `D`.`DOCID`=`C`.`DOCID` AND `C`.`LIBID`=`B`.`LIBID` AND `D`.`DOCID` = '" + searchKeyword + "';");
 		} else if (searchType == SEARCH_TYPE_TITLE) {
-			searchResult = m.execQuery("SELECT `id`, `title`, `publishdate`, `publisherid` FROM `DOCUMENT` WHERE `title` LIKE '%" + searchKeyword + "%';");
+			searchResult = m.execQuery("SELECT * FROM `DOCUMENT` D, `COPY` C, `BRANCH` B WHERE `D`.`DOCID`=`C`.`DOCID` AND `C`.`LIBID`=`B`.`LIBID` AND `D`.`TITLE` LIKE '%" + searchKeyword + "%';");
 		} else if (searchType == SEARCH_TYPE_PUBLISHER) {
-			searchResult = m.execQuery("SELECT `id`, `title`, `publishdate`, `publisherid` FROM `DOCUMENT` WHERE `publisher` LIKE '%" + searchKeyword + "%';");
+			searchResult = m.execQuery("SELECT * FROM `DOCUMENT` D, `PUBLISHER` P, `COPY` C, `BRANCH` B WHERE `D`.`DOCID`=`C`.`DOCID` AND `C`.`LIBID`=`B`.`LIBID` AND `D`.`PUBLISHERID` = `P`.`PUBLISHERID` AND `P`.`PUBNAME` LIKE '%" + searchKeyword + "%';");
 		}
 		
 		if (searchResult == null || searchResult.size() <= 0) return;
