@@ -24,15 +24,16 @@ public class Reader extends JDialog {
 	private JRadioButton radioButtonTitle;
 	private JRadioButton radioButtonPublisher;
 	private JLabel stausLabel;
-
-
+	
 	/**
 	 * Create the frame.
 	 */
-	public Reader() {
+	public Reader(String cardNumber) {
+			
 		getContentPane().setBackground(Color.WHITE);
 		//Connect to Database
 		DBManager m = DBManager.getInstance();
+		m.connect();
 	
 		setBounds(100, 100, 542, 286);
 		getContentPane().setLayout(null);
@@ -70,9 +71,7 @@ public class Reader extends JDialog {
 		bG.add(radioButtonDocId);
 		bG.add(radioButtonTitle);
 		bG.add(radioButtonPublisher);
-		
-		
-	
+				
 		//Search Button
 		JButton btnSearch = new JButton("Search");
 		btnSearch.addActionListener(new ActionListener() {
@@ -91,7 +90,7 @@ public class Reader extends JDialog {
 				} else {
 					searchType = SearchResult.SEARCH_TYPE_ID;
 				}
-				SearchResult dialog = new SearchResult(txtDocSearch.getText(), searchType);
+				SearchResult dialog = new SearchResult(txtDocSearch.getText(), searchType, cardNumber);
 				dialog.setModal(true);
 				dialog.setVisible(true);
 			}
@@ -130,20 +129,21 @@ public class Reader extends JDialog {
 		
 		btnNewButtonHistory.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Reserve dialog = new Reserve();
-				dialog.setModal(true);
-				dialog.setVisible(true);
+				
 			}
 		});
 		btnNewButtonReserve.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Reserve dialog = new Reserve();
+				Reserve dialog = new Reserve(cardNumber);
 				dialog.setModal(true);
 				dialog.setVisible(true);
 			}
 		});
 		btnNewButtonBorrow.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Borrow dialog = new Borrow(cardNumber);
+				dialog.setModal(true);
+				dialog.setVisible(true);
 			}
 		});
 		
