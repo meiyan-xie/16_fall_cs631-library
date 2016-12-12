@@ -10,10 +10,10 @@ import javax.swing.*;
 
 
 public class Admin extends JDialog{
-	private JRadioButton radioButtonAddReader;
-	private JRadioButton radioButtonAddDocument;
-	private JRadioButton radioButtonSearchDoc;
-	private JRadioButton radioButtonGenerateReport;
+	private JButton BtnAddReader;
+	private JButton BtnAddDocument;
+	private JButton BtnSearchDoc;
+	private JButton BtnGenerateReport;
 	//private JLabel stausLabel;
 	
 	/**
@@ -44,9 +44,9 @@ public class Admin extends JDialog{
 		lblAdminId.setBounds(16, 6, 61, 16);
 		getContentPane().add(lblAdminId);
 		
-		//Radio Button
-		JRadioButton radioButtonAddReader = new JRadioButton("Add Reader");
-		radioButtonAddReader.setSelected(true);
+		
+		/*JRadioButton radioButtonAddReader = new JRadioButton("Add Reader");
+		//radioButtonAddReader.setSelected(true);
 		radioButtonAddReader.setBounds(38, 108, 124, 23);
 		getContentPane().add(radioButtonAddReader);
 		
@@ -66,8 +66,51 @@ public class Admin extends JDialog{
 		bG.add(radioButtonAddReader);
 		bG.add(radioButtonAddDocument);
 		bG.add(radioButtonSearchDoc);
-		bG.add(radioButtonGenerateReport);
-				
+		bG.add(radioButtonGenerateReport);*/
+		
+		JButton btnAddReader = new JButton("Add Reader");
+		btnAddReader.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				AddReader dialog = new AddReader();
+				dialog.setModal(true);
+				dialog.setVisible(true);
+				}
+		});
+		btnAddReader.setBounds(38, 64, 79, 29);
+		getContentPane().add(btnAddReader);
+			
+	JButton btnAddDocument = new JButton("Add Document");
+    btnAddDocument.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					AddDocument dialog = new AddDocument();
+					dialog.setModal(true);
+					dialog.setVisible(true);
+					}	
+    });	
+    btnAddDocument.setBounds(120, 64, 79, 29);
+	getContentPane().add(btnAddDocument);
+    
+    JButton btnSearchDoc = new JButton("Search Document");
+    btnSearchDoc.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					SearchDoc dialog = new SearchDoc();
+					dialog.setModal(true);
+					dialog.setVisible(true);
+					}	
+    });	
+    btnSearchDoc.setBounds(38, 124, 79, 29);
+	getContentPane().add(btnSearchDoc);
+    
+    JButton btnGenerateReport = new JButton("Generate Reports");
+    btnGenerateReport.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					GenerateReport dialog = new GenerateReport();
+					dialog.setModal(true);
+					dialog.setVisible(true);
+					}	
+    });	
+    btnGenerateReport.setBounds(120, 124, 79, 29);
+	getContentPane().add(btnGenerateReport);
 		//Search Button
 		/*JButton btnSearch = new JButton("Search");
 		btnSearch.addActionListener(new ActionListener() {
@@ -76,20 +119,28 @@ public class Admin extends JDialog{
 				if (txtDocSearch.getText().length() <= 0) {
 					JOptionPane.showMessageDialog(null, "Enter a valid value");
 					return;
-				}
+				}*/
 
-				int searchType;
-				if (radioButtonTitle.isSelected()) {
-					searchType = SearchResult.SEARCH_TYPE_TITLE;
-				} else if (radioButtonPublisher.isSelected()) {
-					searchType = SearchResult.SEARCH_TYPE_PUBLISHER ;
-				} else {
-					searchType = SearchResult.SEARCH_TYPE_ID;
+				/*int AFunction;
+				if (radioButtonAddReader.isSelected()) {
+					AddReader dialog = new AddReader();
+					dialog.setModal(true);
+					dialog.setVisible(true);
+				} else if (radioButtonAddDocument.isSelected()) {
+					AddDocument dialog = new AddDocument();
+					dialog.setModal(true);
+					dialog.setVisible(true);
+				} else if (radioButtonSearchDoc.isSelected()){
+					SearchDoc dialog = new SearchDoc();
+					dialog.setModal(true);
+					dialog.setVisible(true);
+				}else if (radioButtonGenerateReport.isSelected()){
+					GenerateReport dialog = new GenerateReport();
+					dialog.setModal(true);
+					dialog.setVisible(true);
 				}
-				SearchResult dialog = new SearchResult(txtDocSearch.getText(), searchType, cardNumber);
-				dialog.setModal(true);
-				dialog.setVisible(true);
-			}
+				
+			/*}
 		});
 
 		btnSearch.setBounds(395, 70, 117, 29);
