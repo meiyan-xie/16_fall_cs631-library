@@ -35,36 +35,36 @@ public class Reader extends JDialog {
 		DBManager m = DBManager.getInstance();
 		m.connect();
 	
-		setBounds(100, 100, 542, 286);
+		setBounds(100, 100, 572, 329);
 		getContentPane().setLayout(null);
 		
 		txtDocSearch = new JTextField();
-		txtDocSearch.setBounds(28, 70, 355, 26);
+		txtDocSearch.setBounds(28, 91, 379, 26);
 		getContentPane().add(txtDocSearch);
 		txtDocSearch.setColumns(10);
 		
 		JLabel lblNewLabel = new JLabel("City Library");
 		lblNewLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
 		lblNewLabel.setForeground(Color.BLACK);
-		lblNewLabel.setBounds(202, 24, 181, 50);
+		lblNewLabel.setBounds(226, 30, 95, 50);
 		getContentPane().add(lblNewLabel);
 		
-		JLabel lblReadId = new JLabel("READ ID");
-		lblReadId.setBounds(16, 6, 61, 16);
+		JLabel lblReadId = new JLabel("READ ID: '"+cardNumber+"'");
+		lblReadId.setBounds(16, 6, 136, 16);
 		getContentPane().add(lblReadId);
 		
 		//Radio Button
 		JRadioButton radioButtonDocId = new JRadioButton("Decoument Id");
 		radioButtonDocId.setSelected(true);
-		radioButtonDocId.setBounds(38, 108, 124, 23);
+		radioButtonDocId.setBounds(39, 129, 124, 23);
 		getContentPane().add(radioButtonDocId);
 		
 		radioButtonTitle = new JRadioButton("Title");
-		radioButtonTitle.setBounds(175, 108, 68, 23);
+		radioButtonTitle.setBounds(195, 129, 68, 23);
 		getContentPane().add(radioButtonTitle);
 		
 		radioButtonPublisher = new JRadioButton("Publisher");
-		radioButtonPublisher.setBounds(255, 108, 95, 23);
+		radioButtonPublisher.setBounds(287, 129, 95, 23);
 		getContentPane().add(radioButtonPublisher);
 		
 		ButtonGroup bG = new ButtonGroup();
@@ -96,7 +96,7 @@ public class Reader extends JDialog {
 			}
 		});
 
-		btnSearch.setBounds(395, 70, 117, 29);
+		btnSearch.setBounds(425, 91, 117, 29);
 		getContentPane().add(btnSearch);
 		
 		JSeparator separator = new JSeparator();
@@ -108,28 +108,30 @@ public class Reader extends JDialog {
 		getContentPane().add(separator_1);
 		
 		JSeparator separator_2 = new JSeparator();
-		separator_2.setBounds(0, 207, 542, 16);
+		separator_2.setBounds(0, 223, 572, 16);
 		getContentPane().add(separator_2);
 		
 		JLabel lblReaderProfile = new JLabel("Reader Profile");
-		lblReaderProfile.setBounds(28, 226, 86, 16);
+		lblReaderProfile.setBounds(28, 251, 86, 16);
 		getContentPane().add(lblReaderProfile);
 		
-		JButton btnNewButtonBorrow = new JButton("Borrow");
-		btnNewButtonBorrow.setBounds(142, 221, 87, 29);
+		JButton btnNewButtonBorrow = new JButton("Borrowed Books");
+		btnNewButtonBorrow.setBounds(141, 246, 136, 29);
 		getContentPane().add(btnNewButtonBorrow);
 		
-		JButton btnNewButtonReserve = new JButton("Reserve");
-		btnNewButtonReserve.setBounds(241, 221, 92, 29);
+		JButton btnNewButtonReserve = new JButton("Reserved Books");
+		btnNewButtonReserve.setBounds(296, 246, 130, 29);
 		getContentPane().add(btnNewButtonReserve);
 		
-		JButton btnNewButtonHistory = new JButton("History");
-		btnNewButtonHistory.setBounds(345, 221, 90, 29);
-		getContentPane().add(btnNewButtonHistory);
+		JButton btnNewButtonReturn = new JButton("Return");
+		btnNewButtonReturn.setBounds(438, 246, 114, 29);
+		getContentPane().add(btnNewButtonReturn);
 		
-		btnNewButtonHistory.addActionListener(new ActionListener() {
+		btnNewButtonReturn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				Return dialog = new Return(cardNumber);
+				dialog.setModal(true);
+				dialog.setVisible(true);
 			}
 		});
 		btnNewButtonReserve.addActionListener(new ActionListener() {
