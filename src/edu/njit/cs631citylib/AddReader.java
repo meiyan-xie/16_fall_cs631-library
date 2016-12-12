@@ -107,10 +107,14 @@ public class AddReader extends JDialog{
 					return;
 				}
 					
-				
+				String id = txtReaderID.getText();
+				Integer idi = Integer.parseInt(id);
+				String ty = txtReaderType.getText();
+				String nm = txtReaderName.getText();
+				String ad = txtReaderAdd.getText();
 				
 				m.execUpdate("INSERT INTO READER (READERID, RTYPE, RNAME, ADDRESS) "
-				          +"VALUES (txtReaderID.getText(), txtReaderType.getText(),txtReaderName.getText(), txtReaderAdd.getText())");
+				          +"VALUES ("+ idi + ",'" + txtReaderType.getText() + "','" + txtReaderName.getText() + "','" + txtReaderAdd.getText() +",')");
 				
 				/*ArrayList<ArrayList<Object>> result = m.execQuery("SELECT 'loginID', 'password' FROM `ADMIN` WHERE loginID = '" + txtAdminID.getText() + "' AND password = '" + txtAdminPwd.getText() + "';");
 				if (result == null || result.size() != 1) {
