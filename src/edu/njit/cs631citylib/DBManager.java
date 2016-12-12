@@ -82,7 +82,7 @@ public class DBManager {
 		}
 	}
 
-	public static int execUpdate(String sql) {
+	public int execUpdate(String sql) {
 		if (dbConnection == null) return -1;
 		try {
 			Statement stmt = dbConnection.createStatement();
