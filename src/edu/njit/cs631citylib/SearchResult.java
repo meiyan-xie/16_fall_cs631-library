@@ -114,6 +114,42 @@ public class SearchResult extends JDialog {
 					if (borrowResult == null || borrowResult.size() <= 0) {
 						ArrayList<ArrayList<Object>> count1 = new ArrayList<ArrayList<Object>>();
 						ArrayList<ArrayList<Object>> count2 = new ArrayList<ArrayList<Object>>();
+						
+						// Select this reader reserved doc and remove those expired. 
+						ArrayList<ArrayList<Object>> readerReserved = new ArrayList<ArrayList<Object>>();
+						readerReserved = m.execQuery("SELECT * FROM RESERVES WHERE `READERID` = '" + readerId + "';");
+						Object[][] readerReservedArr = new Object[readerReserved.size()][];
+						for (int i = 0; i < readerReserved.size(); i++) {
+						    ArrayList<Object> row = readerReserved.get(i);
+						    readerReservedArr[i] = row.toArray();
+						}
+						Calendar cl1 = Calendar.getInstance(TimeZone.getDefault());
+						int year1 = cl1.get(Calendar.YEAR);
+						int month1 = cl1.get(Calendar.MONTH);
+						int day1 = cl1.get(Calendar.DAY_OF_MONTH);
+						cl1.set(year1, month1, day1, 18, 0, 0);
+						for (int q = 0; q < readerReservedArr.length; q++) {
+							long dtime = ((Timestamp)readerReservedArr[q][5]).getTime() + 86400000;  // Reserved time + 1 day
+							// If reserved after yesterday 6pm. Then check if now is after 6pm.
+							if (cl1.getTimeInMillis() - dtime < 0) {
+								// If now is after 6pm, that means this doc is expired. Should remove.
+								if ((System.currentTimeMillis() - cl1.getTimeInMillis()) > 0) {
+									int deletedRows = m.execUpdate("DELETE FROM RESERVES WHERE `DTIME` = '" + readerReservedArr[q][5] + "';");
+									if (deletedRows != 1) {
+										JOptionPane.showMessageDialog(null, "Failed to remove reservation");
+										return;
+									}
+								}// If now is before 6pm, don't remove. move to next tuple.
+							} else {
+							// If reserved before yesterday 6pm, then it is expired, should remove.
+								int deletedRows = m.execUpdate("DELETE FROM RESERVES WHERE `DTIME` = '" + readerReservedArr[q][5] + "';");
+								if (deletedRows != 1) {
+									JOptionPane.showMessageDialog(null, "Failed to remove reservation");
+									return;
+								}
+							}		
+						}		
+						// Count those reserved by this reader and not expired.
 						count1 = m.execQuery("SELECT COUNT(*) FROM RESERVES WHERE READERID = '" + readerId + "';");
 						count2 = m.execQuery("SELECT COUNT(*) FROM BORROWS WHERE READERID = '" + readerId + "' AND RDTIME IS NULL;");
 						Long count = (Long)(count1.get(0).get(0)) + (Long)(count2.get(0).get(0));
@@ -174,6 +210,42 @@ public class SearchResult extends JDialog {
 								
 								ArrayList<ArrayList<Object>> count1 = new ArrayList<ArrayList<Object>>();
 								ArrayList<ArrayList<Object>> count2 = new ArrayList<ArrayList<Object>>();
+								
+								// Select this reader reserved doc and remove those expired. 
+								ArrayList<ArrayList<Object>> readerReserved = new ArrayList<ArrayList<Object>>();
+								readerReserved = m.execQuery("SELECT * FROM RESERVES WHERE `READERID` = '" + readerId + "';");
+								Object[][] readerReservedArr = new Object[readerReserved.size()][];
+								for (int i = 0; i < readerReserved.size(); i++) {
+								    ArrayList<Object> row = readerReserved.get(i);
+								    readerReservedArr[i] = row.toArray();
+								}
+								Calendar cl2 = Calendar.getInstance(TimeZone.getDefault());
+								int year2 = cl2.get(Calendar.YEAR);
+								int month2 = cl2.get(Calendar.MONTH);
+								int day2 = cl2.get(Calendar.DAY_OF_MONTH);
+								cl2.set(year2, month2, day2, 18, 0, 0);
+								for (int q = 0; q < readerReservedArr.length; q++) {
+									long dtime = ((Timestamp)readerReservedArr[q][5]).getTime() + 86400000;  // Reserved time + 1 day
+									// If reserved after yesterday 6pm. Then check if now is after 6pm.
+									if (cl2.getTimeInMillis() - dtime < 0) {
+										// If now is after 6pm, that means this doc is expired. Should remove.
+										if ((System.currentTimeMillis() - cl2.getTimeInMillis()) > 0) {
+											int deletedRows = m.execUpdate("DELETE FROM RESERVES WHERE `DTIME` = '" + readerReservedArr[q][5] + "';");
+											if (deletedRows != 1) {
+												JOptionPane.showMessageDialog(null, "Failed to remove reservation");
+												return;
+											}
+										}// If now is before 6pm, don't remove. move to next tuple.
+									} else {
+									// If reserved before yesterday 6pm, then it is expired, should remove.
+										int deletedRows = m.execUpdate("DELETE FROM RESERVES WHERE `DTIME` = '" + readerReservedArr[q][5] + "';");
+										if (deletedRows != 1) {
+											JOptionPane.showMessageDialog(null, "Failed to remove reservation");
+											return;
+										}
+									}		
+								}		
+								// Count those reserved by this reader and not expired.
 								count1 = m.execQuery("SELECT COUNT(*) FROM RESERVES WHERE READERID = '" + readerId + "';");
 								count2 = m.execQuery("SELECT COUNT(*) FROM BORROWS WHERE READERID = '" + readerId + "' AND RDTIME IS NULL;");
 								Long count = (Long)(count1.get(0).get(0)) + (Long)(count2.get(0).get(0));
@@ -205,7 +277,43 @@ public class SearchResult extends JDialog {
 						} else {
 						// If it's reserved before yesterday 6pm, then check if more than 10.
 							ArrayList<ArrayList<Object>> count1 = new ArrayList<ArrayList<Object>>();
-							ArrayList<ArrayList<Object>> count2 = new ArrayList<ArrayList<Object>>();
+							ArrayList<ArrayList<Object>> count2 = new ArrayList<ArrayList<Object>>();	
+							
+							// Select this reader reserved doc and remove those expired. 
+							ArrayList<ArrayList<Object>> readerReserved = new ArrayList<ArrayList<Object>>();
+							readerReserved = m.execQuery("SELECT * FROM RESERVES WHERE `READERID` = '" + readerId + "';");
+							Object[][] readerReservedArr = new Object[readerReserved.size()][];
+							for (int i = 0; i < readerReserved.size(); i++) {
+							    ArrayList<Object> row = readerReserved.get(i);
+							    readerReservedArr[i] = row.toArray();
+							}
+							Calendar cl3 = Calendar.getInstance(TimeZone.getDefault());
+							int year3 = cl3.get(Calendar.YEAR);
+							int month3 = cl3.get(Calendar.MONTH);
+							int day3 = cl3.get(Calendar.DAY_OF_MONTH);
+							cl3.set(year3, month3, day3, 18, 0, 0);
+							for (int q = 0; q < readerReservedArr.length; q++) {
+								long dtime = ((Timestamp)readerReservedArr[q][5]).getTime() + 86400000;  // Reserved time + 1 day
+								// If reserved after yesterday 6pm. Then check if now is after 6pm.
+								if (cl3.getTimeInMillis() - dtime < 0) {
+									// If now is after 6pm, that means this doc is expired. Should remove.
+									if ((System.currentTimeMillis() - cl3.getTimeInMillis()) > 0) {
+										int deletedRows = m.execUpdate("DELETE FROM RESERVES WHERE `DTIME` = '" + readerReservedArr[q][5] + "';");
+										if (deletedRows != 1) {
+											JOptionPane.showMessageDialog(null, "Failed to remove reservation");
+											return;
+										}
+									}// If now is before 6pm, don't remove. move to next tuple.
+								} else {
+								// If reserved before yesterday 6pm, then it is expired, should remove.
+									int deletedRows = m.execUpdate("DELETE FROM RESERVES WHERE `DTIME` = '" + readerReservedArr[q][5] + "';");
+									if (deletedRows != 1) {
+										JOptionPane.showMessageDialog(null, "Failed to remove reservation");
+										return;
+									}
+								}		
+							}		
+							// Count those reserved by this reader and not expired.
 							count1 = m.execQuery("SELECT COUNT(*) FROM RESERVES WHERE READERID = '" + readerId + "';");
 							count2 = m.execQuery("SELECT COUNT(*) FROM BORROWS WHERE READERID = '" + readerId + "' AND RDTIME IS NULL;");
 							Long count = (Long)(count1.get(0).get(0)) + (Long)(count2.get(0).get(0));
@@ -255,6 +363,42 @@ public class SearchResult extends JDialog {
 					if (borrowResult == null || borrowResult.size() <= 0) {
 						ArrayList<ArrayList<Object>> count1 = new ArrayList<ArrayList<Object>>();
 						ArrayList<ArrayList<Object>> count2 = new ArrayList<ArrayList<Object>>();
+						
+						// Select this reader reserved doc and remove those expired. 
+						ArrayList<ArrayList<Object>> readerReserved = new ArrayList<ArrayList<Object>>();
+						readerReserved = m.execQuery("SELECT * FROM RESERVES WHERE `READERID` = '" + readerId + "';");
+						Object[][] readerReservedArr = new Object[readerReserved.size()][];
+						for (int i = 0; i < readerReserved.size(); i++) {
+						    ArrayList<Object> row = readerReserved.get(i);
+						    readerReservedArr[i] = row.toArray();
+						}
+						Calendar cl1 = Calendar.getInstance(TimeZone.getDefault());
+						int year1 = cl1.get(Calendar.YEAR);
+						int month1 = cl1.get(Calendar.MONTH);
+						int day1 = cl1.get(Calendar.DAY_OF_MONTH);
+						cl1.set(year1, month1, day1, 18, 0, 0);
+						for (int q = 0; q < readerReservedArr.length; q++) {
+							long dtime = ((Timestamp)readerReservedArr[q][5]).getTime() + 86400000;  // Reserved time + 1 day
+							// If reserved after yesterday 6pm. Then check if now is after 6pm.
+							if (cl1.getTimeInMillis() - dtime < 0) {
+								// If now is after 6pm, that means this doc is expired. Should remove.
+								if ((System.currentTimeMillis() - cl1.getTimeInMillis()) > 0) {
+									int deletedRows = m.execUpdate("DELETE FROM RESERVES WHERE `DTIME` = '" + readerReservedArr[q][5] + "';");
+									if (deletedRows != 1) {
+										JOptionPane.showMessageDialog(null, "Failed to remove reservation");
+										return;
+									}
+								}// If now is before 6pm, don't remove. move to next tuple.
+							} else {
+							// If reserved before yesterday 6pm, then it is expired, should remove.
+								int deletedRows = m.execUpdate("DELETE FROM RESERVES WHERE `DTIME` = '" + readerReservedArr[q][5] + "';");
+								if (deletedRows != 1) {
+									JOptionPane.showMessageDialog(null, "Failed to remove reservation");
+									return;
+								}
+							}		
+						}		
+						// Count those reserved by this reader and not expired.
 						count1 = m.execQuery("SELECT COUNT(*) FROM RESERVES WHERE READERID = '" + readerId + "';");
 						count2 = m.execQuery("SELECT COUNT(*) FROM BORROWS WHERE READERID = '" + readerId + "' AND RDTIME IS NULL;");
 						Long count = (Long)(count1.get(0).get(0)) + (Long)(count2.get(0).get(0));
@@ -315,6 +459,42 @@ public class SearchResult extends JDialog {
 								
 								ArrayList<ArrayList<Object>> count1 = new ArrayList<ArrayList<Object>>();
 								ArrayList<ArrayList<Object>> count2 = new ArrayList<ArrayList<Object>>();
+
+								// Select this reader reserved doc and remove those expired. 
+								ArrayList<ArrayList<Object>> readerReserved = new ArrayList<ArrayList<Object>>();
+								readerReserved = m.execQuery("SELECT * FROM RESERVES WHERE `READERID` = '" + readerId + "';");
+								Object[][] readerReservedArr = new Object[readerReserved.size()][];
+								for (int i = 0; i < readerReserved.size(); i++) {
+								    ArrayList<Object> row = readerReserved.get(i);
+								    readerReservedArr[i] = row.toArray();
+								}
+								Calendar cl2 = Calendar.getInstance(TimeZone.getDefault());
+								int year2 = cl2.get(Calendar.YEAR);
+								int month2 = cl2.get(Calendar.MONTH);
+								int day2 = cl2.get(Calendar.DAY_OF_MONTH);
+								cl2.set(year2, month2, day2, 18, 0, 0);
+								for (int q = 0; q < readerReservedArr.length; q++) {
+									long dtime = ((Timestamp)readerReservedArr[q][5]).getTime() + 86400000;  // Reserved time + 1 day
+									// If reserved after yesterday 6pm. Then check if now is after 6pm.
+									if (cl2.getTimeInMillis() - dtime < 0) {
+										// If now is after 6pm, that means this doc is expired. Should remove.
+										if ((System.currentTimeMillis() - cl2.getTimeInMillis()) > 0) {
+											int deletedRows = m.execUpdate("DELETE FROM RESERVES WHERE `DTIME` = '" + readerReservedArr[q][5] + "';");
+											if (deletedRows != 1) {
+												JOptionPane.showMessageDialog(null, "Failed to remove reservation");
+												return;
+											}
+										}// If now is before 6pm, don't remove. move to next tuple.
+									} else {
+									// If reserved before yesterday 6pm, then it is expired, should remove.
+										int deletedRows = m.execUpdate("DELETE FROM RESERVES WHERE `DTIME` = '" + readerReservedArr[q][5] + "';");
+										if (deletedRows != 1) {
+											JOptionPane.showMessageDialog(null, "Failed to remove reservation");
+											return;
+										}
+									}		
+								}		
+								// Count those reserved by this reader and not expired.
 								count1 = m.execQuery("SELECT COUNT(*) FROM RESERVES WHERE READERID = '" + readerId + "';");
 								count2 = m.execQuery("SELECT COUNT(*) FROM BORROWS WHERE READERID = '" + readerId + "' AND RDTIME IS NULL;");
 								Long count = (Long)(count1.get(0).get(0)) + (Long)(count2.get(0).get(0));
@@ -347,6 +527,42 @@ public class SearchResult extends JDialog {
 						// If it's reserved before yesterday 6pm, then check if more than 10.
 							ArrayList<ArrayList<Object>> count1 = new ArrayList<ArrayList<Object>>();
 							ArrayList<ArrayList<Object>> count2 = new ArrayList<ArrayList<Object>>();
+							
+							// Select this reader reserved doc and remove those expired. 
+							ArrayList<ArrayList<Object>> readerReserved = new ArrayList<ArrayList<Object>>();
+							readerReserved = m.execQuery("SELECT * FROM RESERVES WHERE `READERID` = '" + readerId + "';");
+							Object[][] readerReservedArr = new Object[readerReserved.size()][];
+							for (int i = 0; i < readerReserved.size(); i++) {
+							    ArrayList<Object> row = readerReserved.get(i);
+							    readerReservedArr[i] = row.toArray();
+							}
+							Calendar cl3 = Calendar.getInstance(TimeZone.getDefault());
+							int year3 = cl3.get(Calendar.YEAR);
+							int month3 = cl3.get(Calendar.MONTH);
+							int day3 = cl3.get(Calendar.DAY_OF_MONTH);
+							cl3.set(year3, month3, day3, 18, 0, 0);
+							for (int q = 0; q < readerReservedArr.length; q++) {
+								long dtime = ((Timestamp)readerReservedArr[q][5]).getTime() + 86400000;  // Reserved time + 1 day
+								// If reserved after yesterday 6pm. Then check if now is after 6pm.
+								if (cl3.getTimeInMillis() - dtime < 0) {
+									// If now is after 6pm, that means this doc is expired. Should remove.
+									if ((System.currentTimeMillis() - cl3.getTimeInMillis()) > 0) {
+										int deletedRows = m.execUpdate("DELETE FROM RESERVES WHERE `DTIME` = '" + readerReservedArr[q][5] + "';");
+										if (deletedRows != 1) {
+											JOptionPane.showMessageDialog(null, "Failed to remove reservation");
+											return;
+										}
+									}// If now is before 6pm, don't remove. move to next tuple.
+								} else {
+								// If reserved before yesterday 6pm, then it is expired, should remove.
+									int deletedRows = m.execUpdate("DELETE FROM RESERVES WHERE `DTIME` = '" + readerReservedArr[q][5] + "';");
+									if (deletedRows != 1) {
+										JOptionPane.showMessageDialog(null, "Failed to remove reservation");
+										return;
+									}
+								}		
+							}		
+							// Count those reserved by this reader and not expired.
 							count1 = m.execQuery("SELECT COUNT(*) FROM RESERVES WHERE READERID = '" + readerId + "';");
 							count2 = m.execQuery("SELECT COUNT(*) FROM BORROWS WHERE READERID = '" + readerId + "' AND RDTIME IS NULL;");
 							Long count = (Long)(count1.get(0).get(0)) + (Long)(count2.get(0).get(0));
