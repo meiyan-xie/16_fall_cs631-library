@@ -19,6 +19,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import java.awt.Color;
 
 public class SearchResult extends JDialog {
 
@@ -49,17 +50,20 @@ public class SearchResult extends JDialog {
 	 * Create the dialog.
 	 */
 	public SearchResult(String searchKeyword, int searchType, String readerId) {
+		setTitle("CITY LIBRARY");
 		// Initialize MySQL connection
 		DBManager m = DBManager.getInstance();
 		
 		setBounds(100, 100, 1000, 610);
 		getContentPane().setLayout(new BorderLayout());
+		contentPanel.setBackground(Color.WHITE);
+		contentPanel.setForeground(Color.WHITE);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		
-		JLabel lblDocresult = new JLabel("Doc search result");
-		lblDocresult.setBounds(74, 78, 853, 31);
+		JLabel lblDocresult = new JLabel("Document search result:");
+		lblDocresult.setBounds(60, 53, 853, 31);
 		contentPanel.add(lblDocresult);
 		
 		
@@ -85,7 +89,7 @@ public class SearchResult extends JDialog {
 		DefaultTableModel tm = new DefaultTableModel(searchArray, columnNames);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(72, 110, 855, 327);
+		scrollPane.setBounds(60, 96, 871, 344);
 		contentPanel.add(scrollPane);
 		
 		tableDocSearchResult = new JTable();
@@ -111,10 +115,11 @@ public class SearchResult extends JDialog {
 						ArrayList<ArrayList<Object>> count1 = new ArrayList<ArrayList<Object>>();
 						ArrayList<ArrayList<Object>> count2 = new ArrayList<ArrayList<Object>>();
 						count1 = m.execQuery("SELECT COUNT(*) FROM RESERVES WHERE READERID = '" + readerId + "';");
-						count2 = m.execQuery("SELECT COUNT(*) FROM BORROWS WHERE READERID = '" + readerId + "';");
+						count2 = m.execQuery("SELECT COUNT(*) FROM BORROWS WHERE READERID = '" + readerId + "' AND RDTIME IS NULL;");
+						Long count = (Long)(count1.get(0).get(0)) + (Long)(count2.get(0).get(0));
 						
 						// If less than 10. then can reserve.
-						if ((Long)(count1.get(0).get(0)) < 10) {
+						if (count < 10) {
 							int insertedRows = m.execUpdate("INSERT INTO RESERVES(`READERID`, `DOCID`, `COPYNO`, `LIBID`, `DTIME`) VALUES('" + readerId + "','" + searchArray[rowIndex][0] + "','" + searchArray[rowIndex][4] + "','" + searchArray[rowIndex][5] +"', NOW());");
 							if (insertedRows != 1) {
 								JOptionPane.showMessageDialog(null, "Reserve failed!");
@@ -170,10 +175,11 @@ public class SearchResult extends JDialog {
 								ArrayList<ArrayList<Object>> count1 = new ArrayList<ArrayList<Object>>();
 								ArrayList<ArrayList<Object>> count2 = new ArrayList<ArrayList<Object>>();
 								count1 = m.execQuery("SELECT COUNT(*) FROM RESERVES WHERE READERID = '" + readerId + "';");
-								count2 = m.execQuery("SELECT COUNT(*) FROM BORROWS WHERE READERID = '" + readerId + "';");
+								count2 = m.execQuery("SELECT COUNT(*) FROM BORROWS WHERE READERID = '" + readerId + "' AND RDTIME IS NULL;");
+								Long count = (Long)(count1.get(0).get(0)) + (Long)(count2.get(0).get(0));
 								
 								// If less than 10. then can borrow. delete from RESERVE and insert into RESERVE.
-								if ((Long)(count1.get(0).get(0)) < 10) {
+								if (count < 10) {
 									
 									int deletedRows = m.execUpdate("DELETE FROM RESERVES WHERE `DOCID` = '" + searchArray[rowIndex][0] + "' AND `COPYNO` = '" + searchArray[rowIndex][4] + "' AND `LIBID` = '" + searchArray[rowIndex][5] +"';");
 									if (deletedRows != 1) {
@@ -201,10 +207,11 @@ public class SearchResult extends JDialog {
 							ArrayList<ArrayList<Object>> count1 = new ArrayList<ArrayList<Object>>();
 							ArrayList<ArrayList<Object>> count2 = new ArrayList<ArrayList<Object>>();
 							count1 = m.execQuery("SELECT COUNT(*) FROM RESERVES WHERE READERID = '" + readerId + "';");
-							count2 = m.execQuery("SELECT COUNT(*) FROM BORROWS WHERE READERID = '" + readerId + "';");
+							count2 = m.execQuery("SELECT COUNT(*) FROM BORROWS WHERE READERID = '" + readerId + "' AND RDTIME IS NULL;");
+							Long count = (Long)(count1.get(0).get(0)) + (Long)(count2.get(0).get(0));
 							
 							// If less than 10. then can borrow. delete from RESERVE and insert into RESERVE.
-							if (((Long)count1.get(0).get(0)) < 10) {
+							if (count < 10) {
 								
 								int deletedRows = m.execUpdate("DELETE FROM RESERVES WHERE `DOCID` = '" + searchArray[rowIndex][0] + "' AND `COPYNO` = '" + searchArray[rowIndex][4] + "' AND `LIBID` = '" + searchArray[rowIndex][5] +"';");
 								if (deletedRows != 1) {
@@ -227,7 +234,7 @@ public class SearchResult extends JDialog {
 				}			
 			}
 		});
-		btnReserve.setBounds(460, 505, 117, 29);
+		btnReserve.setBounds(814, 467, 117, 29);
 		contentPanel.add(btnReserve);
 		
 		
@@ -249,10 +256,11 @@ public class SearchResult extends JDialog {
 						ArrayList<ArrayList<Object>> count1 = new ArrayList<ArrayList<Object>>();
 						ArrayList<ArrayList<Object>> count2 = new ArrayList<ArrayList<Object>>();
 						count1 = m.execQuery("SELECT COUNT(*) FROM RESERVES WHERE READERID = '" + readerId + "';");
-						count2 = m.execQuery("SELECT COUNT(*) FROM BORROWS WHERE READERID = '" + readerId + "';");
+						count2 = m.execQuery("SELECT COUNT(*) FROM BORROWS WHERE READERID = '" + readerId + "' AND RDTIME IS NULL;");
+						Long count = (Long)(count1.get(0).get(0)) + (Long)(count2.get(0).get(0));
 						
 						// If less than 10. then can borrow.
-						if ((Long)(count1.get(0).get(0)) < 10) {
+						if (count < 10) {
 							int insertedRows = m.execUpdate("INSERT INTO BORROWS(`READERID`, `DOCID`, `COPYNO`, `LIBID`, `BDTIME`, `RDTIME`) VALUES('" + readerId + "','" + searchArray[rowIndex][0] + "','" + searchArray[rowIndex][4] + "','" + searchArray[rowIndex][5] +"', NOW(), NULL);");
 							if (insertedRows != 1) {
 								JOptionPane.showMessageDialog(null, "Borrow failed!");
@@ -308,10 +316,11 @@ public class SearchResult extends JDialog {
 								ArrayList<ArrayList<Object>> count1 = new ArrayList<ArrayList<Object>>();
 								ArrayList<ArrayList<Object>> count2 = new ArrayList<ArrayList<Object>>();
 								count1 = m.execQuery("SELECT COUNT(*) FROM RESERVES WHERE READERID = '" + readerId + "';");
-								count2 = m.execQuery("SELECT COUNT(*) FROM BORROWS WHERE READERID = '" + readerId + "';");
+								count2 = m.execQuery("SELECT COUNT(*) FROM BORROWS WHERE READERID = '" + readerId + "' AND RDTIME IS NULL;");
+								Long count = (Long)(count1.get(0).get(0)) + (Long)(count2.get(0).get(0));
 								
 								// If less than 10. then can borrow. delete from RESERVE and insert into BORROW.
-								if ((Long)(count1.get(0).get(0)) < 10) {
+								if (count < 10) {
 									
 									int deletedRows = m.execUpdate("DELETE FROM RESERVES WHERE `DOCID` = '" + searchArray[rowIndex][0] + "' AND `COPYNO` = '" + searchArray[rowIndex][4] + "' AND `LIBID` = '" + searchArray[rowIndex][5] +"';");
 									if (deletedRows != 1) {
@@ -339,10 +348,11 @@ public class SearchResult extends JDialog {
 							ArrayList<ArrayList<Object>> count1 = new ArrayList<ArrayList<Object>>();
 							ArrayList<ArrayList<Object>> count2 = new ArrayList<ArrayList<Object>>();
 							count1 = m.execQuery("SELECT COUNT(*) FROM RESERVES WHERE READERID = '" + readerId + "';");
-							count2 = m.execQuery("SELECT COUNT(*) FROM BORROWS WHERE READERID = '" + readerId + "';");
+							count2 = m.execQuery("SELECT COUNT(*) FROM BORROWS WHERE READERID = '" + readerId + "' AND RDTIME IS NULL;");
+							Long count = (Long)(count1.get(0).get(0)) + (Long)(count2.get(0).get(0));
 							
 							// If less than 10. then can borrow. delete from RESERVE and insert into BORROW.
-							if (((Long)count1.get(0).get(0)) < 10) {
+							if (count < 10) {
 								
 								int deletedRows = m.execUpdate("DELETE FROM RESERVES WHERE `DOCID` = '" + searchArray[rowIndex][0] + "' AND `COPYNO` = '" + searchArray[rowIndex][4] + "' AND `LIBID` = '" + searchArray[rowIndex][5] +"';");
 								if (deletedRows != 1) {
@@ -365,7 +375,7 @@ public class SearchResult extends JDialog {
 				}			
 			}
 		});
-		btnBorrow.setBounds(112, 505, 117, 29);
+		btnBorrow.setBounds(637, 467, 117, 29);
 		contentPanel.add(btnBorrow);
 
 	}
