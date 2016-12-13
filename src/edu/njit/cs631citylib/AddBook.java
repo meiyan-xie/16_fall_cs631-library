@@ -31,11 +31,11 @@ public AddBook() {
 		DBManager m = DBManager.getInstance();
 		m.connect();
 	
-		setBounds(100, 100, 1000, 550);
+		setBounds(100, 100, 500, 550);
 		getContentPane().setLayout(null);
 		
 		JLabel lblAddBook = new JLabel("Add Book to Database");
-		lblAddBook.setBounds(74, 78, 53, 31);
+		lblAddBook.setBounds(74, 78, 200, 31);
 		getContentPane().add(lblAddBook);
 		
 		JLabel lblBookID = new JLabel("ID");

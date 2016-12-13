@@ -35,7 +35,7 @@ public AddJournal() {
 		getContentPane().setLayout(null);
 		
 		JLabel lblAddJounal = new JLabel("Add Journal to Database");
-		lblAddJounal.setBounds(74, 78, 53, 31);
+		lblAddJounal.setBounds(74, 78, 200, 31);
 		getContentPane().add(lblAddJounal);
 		
 		JLabel lblJournalID = new JLabel("ID");

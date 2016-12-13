@@ -29,11 +29,11 @@ public AddDocument() {
 		DBManager m = DBManager.getInstance();
 		m.connect();
 	
-		setBounds(100, 100, 1000, 550);
+		setBounds(100, 100, 500, 550);
 		getContentPane().setLayout(null);
 		
 		JLabel lblAddReader = new JLabel("Add Document to Database");
-		lblAddReader.setBounds(38, 14, 100, 31);
+		lblAddReader.setBounds(38, 14, 200, 31);
 		getContentPane().add(lblAddReader);
 		
 		JButton btnAddBook = new JButton("Add Book");
@@ -44,7 +44,7 @@ public AddDocument() {
 				dialog.setVisible(true);
 				}
 		});
-		btnAddBook.setBounds(38, 64, 100, 29);
+		btnAddBook.setBounds(38, 64, 200, 29);
 		getContentPane().add(btnAddBook);
 			
 	JButton btnAddJournal = new JButton("Add Journal");
@@ -55,7 +55,7 @@ public AddDocument() {
 					dialog.setVisible(true);
 					}	
     });	
-	btnAddJournal.setBounds(38, 114, 100, 29);
+	btnAddJournal.setBounds(38, 114, 200, 29);
 	getContentPane().add(btnAddJournal);
     
     JButton btnAddProc = new JButton("Add Proceedings");
@@ -66,7 +66,7 @@ public AddDocument() {
 					dialog.setVisible(true);
 					}	
     });	
-    btnAddProc.setBounds(38, 164, 100, 29);
+    btnAddProc.setBounds(38, 164, 200, 29);
 	getContentPane().add(btnAddProc);
 		
 }
