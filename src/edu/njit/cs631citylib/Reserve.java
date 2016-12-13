@@ -4,7 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.WindowEvent;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -42,10 +45,33 @@ public class Reserve extends JDialog {
 		
 		reserveResult = m.execQuery("SELECT `RESNUMBER`, `READERID`, `DOCID`, `COPYNO`, `LIBID`, `DTIME` FROM `RESERVES` WHERE `READERID` = " + cardNumber + ";");
 
+		//get current time
+		long b2 = System.currentTimeMillis();
+		
+		//get today's 6PM
+		Calendar cl = Calendar.getInstance(TimeZone.getDefault());
+		int year = cl.get(Calendar.YEAR);
+		int month = cl.get(Calendar.MONTH);
+		int day = cl.get(Calendar.DAY_OF_MONTH);
+		cl.set(year, month, day, 18, 0, 0);
+		
+		//Calculate yesterday 6PM 
+		long y = cl.getTimeInMillis() - 86400000;
+		
 		Object[][] array = new Object[reserveResult.size()][];
+		int j = 0;
 		for (int i = 0; i < reserveResult.size(); i++) {
 			ArrayList<Object> row = reserveResult.get(i);
-			array[i] = row.toArray();
+			//get reserve time
+			Timestamp r = (Timestamp)row.get(5);
+			//Check if the reserve time is less than yesterday 6PM
+			if (r.getTime()-y > 0){
+				//Check if current time is before 6PM
+				if (b2 - cl.getTimeInMillis()<0){
+					array[j] = row.toArray();
+					j = j+1;
+				}	
+			}		
 		}
 
 		if (reserveResult == null || reserveResult.size() <= 0){
