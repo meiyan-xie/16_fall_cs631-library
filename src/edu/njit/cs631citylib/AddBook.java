@@ -124,9 +124,9 @@ public AddBook() {
 					
 				String id = txtBookID.getText();
 				Integer idi = Integer.parseInt(id);
-				String lid = txtBookID.getText();
+				String lid = txtLID.getText();
 				Integer idl = Integer.parseInt(lid);
-				String pid = txtBookID.getText();
+				String pid = txtPID.getText();
 				Integer idp = Integer.parseInt(pid);
 				//String ty = txtReaderType.getText();
 				//String nm = txtReaderName.getText();
