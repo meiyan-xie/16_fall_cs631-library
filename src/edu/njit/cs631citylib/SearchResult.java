@@ -111,12 +111,12 @@ public class SearchResult extends JDialog {
 				}
 				
 				ArrayList<ArrayList<Object>> reservedResult = new ArrayList<ArrayList<Object>>();
-				reservedResult = m.execQuery("SELECT * FROM RESERVES R WHERE `R`.`DOCID` = '" + searchArray[rowIndex][0] + "' AND `R`.`COPYNO` = '" + searchArray[rowIndex][4] + "' AND `R`.`LIBID` = '" + searchArray[rowIndex][5] +"';");
+				reservedResult = m.execQuery("SELECT * FROM RESERVES R WHERE `R`.`DOCID` = '" + searchArray[rowIndex][0] + "' AND `R`.`COPYNO` = '" + searchArray[rowIndex][5] + "' AND `R`.`LIBID` = '" + searchArray[rowIndex][6] +"';");
 				
 				// If this copy dosen't exist in RESERVES table, then check if in the BORROW table and not return (RDTIME IS NULL).
 				if (reservedResult == null || reservedResult.size() <= 0) {
 					ArrayList<ArrayList<Object>> borrowResult = new ArrayList<ArrayList<Object>>();
-					borrowResult = m.execQuery("SELECT * FROM BORROWS B WHERE `B`.`DOCID` = '" + searchArray[rowIndex][0] + "' AND `B`.`COPYNO` = '" + searchArray[rowIndex][4] + "' AND `B`.`LIBID` = '" + searchArray[rowIndex][5] +"' AND `B`.`RDTIME` IS NULL;");
+					borrowResult = m.execQuery("SELECT * FROM BORROWS B WHERE `B`.`DOCID` = '" + searchArray[rowIndex][0] + "' AND `B`.`COPYNO` = '" + searchArray[rowIndex][5] + "' AND `B`.`LIBID` = '" + searchArray[rowIndex][6] +"' AND `B`.`RDTIME` IS NULL;");
 				
 					// If not in the BORROW table or returned, then check whether more than 10.
 					if (borrowResult == null || borrowResult.size() <= 0) {
@@ -167,7 +167,7 @@ public class SearchResult extends JDialog {
 						
 						// If less than 10. then can reserve.
 						if (count < 10) {
-							int insertedRows = m.execUpdate("INSERT INTO RESERVES(`READERID`, `DOCID`, `COPYNO`, `LIBID`, `DTIME`) VALUES('" + readerId + "','" + searchArray[rowIndex][0] + "','" + searchArray[rowIndex][4] + "','" + searchArray[rowIndex][5] +"', NOW());");
+							int insertedRows = m.execUpdate("INSERT INTO RESERVES(`READERID`, `DOCID`, `COPYNO`, `LIBID`, `DTIME`) VALUES('" + readerId + "','" + searchArray[rowIndex][0] + "','" + searchArray[rowIndex][5] + "','" + searchArray[rowIndex][6] +"', NOW());");
 							if (insertedRows != 1) {
 								JOptionPane.showMessageDialog(null, "Reserve failed!");
 							} else {
@@ -191,13 +191,13 @@ public class SearchResult extends JDialog {
 					
 					// Check if is himself, then delete the tuple in RESERVE and insert one into RESERVE
 					if (((Long)reserveArr[0][1]).toString().equals(readerId)) {
-						int deletedRows = m.execUpdate("DELETE FROM RESERVES WHERE `DOCID` = '" + searchArray[rowIndex][0] + "' AND `COPYNO` = '" + searchArray[rowIndex][4] + "' AND `LIBID` = '" + searchArray[rowIndex][5] +"';");
+						int deletedRows = m.execUpdate("DELETE FROM RESERVES WHERE `DOCID` = '" + searchArray[rowIndex][0] + "' AND `COPYNO` = '" + searchArray[rowIndex][5] + "' AND `LIBID` = '" + searchArray[rowIndex][6] +"';");
 						if (deletedRows != 1) {
 							JOptionPane.showMessageDialog(null, "Failed to remove reservation");
 							return;
 						}
 
-						int insertedRows = m.execUpdate("INSERT INTO RESERVES(`READERID`, `DOCID`, `COPYNO`, `LIBID`, `DTIME`) VALUES('" + readerId + "','" + searchArray[rowIndex][0] + "','" + searchArray[rowIndex][4] + "','" + searchArray[rowIndex][5] +"', NOW());");
+						int insertedRows = m.execUpdate("INSERT INTO RESERVES(`READERID`, `DOCID`, `COPYNO`, `LIBID`, `DTIME`) VALUES('" + readerId + "','" + searchArray[rowIndex][0] + "','" + searchArray[rowIndex][5] + "','" + searchArray[rowIndex][6] +"', NOW());");
 						if (insertedRows != 1) {
 							JOptionPane.showMessageDialog(null, "Reserve failed!");
 						} else {
@@ -268,13 +268,13 @@ public class SearchResult extends JDialog {
 									// If less than 10. then can borrow. delete from RESERVE and insert into RESERVE.
 									if (count < 10) {
 										
-										int deletedRows = m.execUpdate("DELETE FROM RESERVES WHERE `DOCID` = '" + searchArray[rowIndex][0] + "' AND `COPYNO` = '" + searchArray[rowIndex][4] + "' AND `LIBID` = '" + searchArray[rowIndex][5] +"';");
+										int deletedRows = m.execUpdate("DELETE FROM RESERVES WHERE `DOCID` = '" + searchArray[rowIndex][0] + "' AND `COPYNO` = '" + searchArray[rowIndex][5] + "' AND `LIBID` = '" + searchArray[rowIndex][6] +"';");
 										if (deletedRows != 1) {
 											JOptionPane.showMessageDialog(null, "Failed to remove reservation");
 											return;
 										}
 										
-										int insertedRows = m.execUpdate("INSERT INTO RESERVES(`READERID`, `DOCID`, `COPYNO`, `LIBID`, `DTIME`) VALUES('" + readerId + "','" + searchArray[rowIndex][0] + "','" + searchArray[rowIndex][4] + "','" + searchArray[rowIndex][5] +"', NOW());");
+										int insertedRows = m.execUpdate("INSERT INTO RESERVES(`READERID`, `DOCID`, `COPYNO`, `LIBID`, `DTIME`) VALUES('" + readerId + "','" + searchArray[rowIndex][0] + "','" + searchArray[rowIndex][5] + "','" + searchArray[rowIndex][6] +"', NOW());");
 										if (insertedRows != 1) {
 											JOptionPane.showMessageDialog(null, "Reserve failed!");
 										} else {
@@ -343,13 +343,13 @@ public class SearchResult extends JDialog {
 							// If less than 10. then can borrow. delete from RESERVE and insert into RESERVE.
 							if (count < 10) {
 								
-								int deletedRows = m.execUpdate("DELETE FROM RESERVES WHERE `DOCID` = '" + searchArray[rowIndex][0] + "' AND `COPYNO` = '" + searchArray[rowIndex][4] + "' AND `LIBID` = '" + searchArray[rowIndex][5] +"';");
+								int deletedRows = m.execUpdate("DELETE FROM RESERVES WHERE `DOCID` = '" + searchArray[rowIndex][0] + "' AND `COPYNO` = '" + searchArray[rowIndex][5] + "' AND `LIBID` = '" + searchArray[rowIndex][6] +"';");
 								if (deletedRows != 1) {
 									JOptionPane.showMessageDialog(null, "Failed to remove reservation");
 									return;
 								}
 								
-								int insertedRows = m.execUpdate("INSERT INTO RESERVES(`READERID`, `DOCID`, `COPYNO`, `LIBID`, `DTIME`) VALUES('" + readerId + "','" + searchArray[rowIndex][0] + "','" + searchArray[rowIndex][4] + "','" + searchArray[rowIndex][5] +"', NOW());");
+								int insertedRows = m.execUpdate("INSERT INTO RESERVES(`READERID`, `DOCID`, `COPYNO`, `LIBID`, `DTIME`) VALUES('" + readerId + "','" + searchArray[rowIndex][0] + "','" + searchArray[rowIndex][5] + "','" + searchArray[rowIndex][6] +"', NOW());");
 								if (insertedRows != 1) {
 									JOptionPane.showMessageDialog(null, "Reserve failed!");
 								} else {
@@ -379,12 +379,12 @@ public class SearchResult extends JDialog {
 				}
 				
 				ArrayList<ArrayList<Object>> reservedResult = new ArrayList<ArrayList<Object>>();
-				reservedResult = m.execQuery("SELECT * FROM RESERVES R WHERE `R`.`DOCID` = '" + searchArray[rowIndex][0] + "' AND `R`.`COPYNO` = '" + searchArray[rowIndex][4] + "' AND `R`.`LIBID` = '" + searchArray[rowIndex][5] +"';");
+				reservedResult = m.execQuery("SELECT * FROM RESERVES R WHERE `R`.`DOCID` = '" + searchArray[rowIndex][0] + "' AND `R`.`COPYNO` = '" + searchArray[rowIndex][5] + "' AND `R`.`LIBID` = '" + searchArray[rowIndex][6] +"';");
 				
 				// If this copy dosen't exist in RESERVES table, then check if in the BORROW table and not return (RDTIME IS NULL).
 				if (reservedResult == null || reservedResult.size() <= 0) {
 					ArrayList<ArrayList<Object>> borrowResult = new ArrayList<ArrayList<Object>>();
-					borrowResult = m.execQuery("SELECT * FROM BORROWS B WHERE `B`.`DOCID` = '" + searchArray[rowIndex][0] + "' AND `B`.`COPYNO` = '" + searchArray[rowIndex][4] + "' AND `B`.`LIBID` = '" + searchArray[rowIndex][5] +"' AND `B`.`RDTIME` IS NULL;");
+					borrowResult = m.execQuery("SELECT * FROM BORROWS B WHERE `B`.`DOCID` = '" + searchArray[rowIndex][0] + "' AND `B`.`COPYNO` = '" + searchArray[rowIndex][5] + "' AND `B`.`LIBID` = '" + searchArray[rowIndex][6] +"' AND `B`.`RDTIME` IS NULL;");
 				
 					// If not in the BORROW table or returned, then check whether more than 10.
 					if (borrowResult == null || borrowResult.size() <= 0) {
@@ -435,7 +435,7 @@ public class SearchResult extends JDialog {
 						
 						// If less than 10. then can borrow.
 						if (count < 10) {
-							int insertedRows = m.execUpdate("INSERT INTO BORROWS(`READERID`, `DOCID`, `COPYNO`, `LIBID`, `BDTIME`, `RDTIME`) VALUES('" + readerId + "','" + searchArray[rowIndex][0] + "','" + searchArray[rowIndex][4] + "','" + searchArray[rowIndex][5] +"', NOW(), NULL);");
+							int insertedRows = m.execUpdate("INSERT INTO BORROWS(`READERID`, `DOCID`, `COPYNO`, `LIBID`, `BDTIME`, `RDTIME`) VALUES('" + readerId + "','" + searchArray[rowIndex][0] + "','" + searchArray[rowIndex][5] + "','" + searchArray[rowIndex][6] +"', NOW(), NULL);");
 							if (insertedRows != 1) {
 								JOptionPane.showMessageDialog(null, "Borrow failed!");
 							} else {
@@ -459,13 +459,13 @@ public class SearchResult extends JDialog {
 					
 					// Check if is himself, then delete the tuple in RESERVE and insert one into BORROW
 					if (((Long)reserveArr[0][1]).toString().equals(readerId)) {
-						int deletedRows = m.execUpdate("DELETE FROM RESERVES WHERE `DOCID` = '" + searchArray[rowIndex][0] + "' AND `COPYNO` = '" + searchArray[rowIndex][4] + "' AND `LIBID` = '" + searchArray[rowIndex][5] +"';");
+						int deletedRows = m.execUpdate("DELETE FROM RESERVES WHERE `DOCID` = '" + searchArray[rowIndex][0] + "' AND `COPYNO` = '" + searchArray[rowIndex][5] + "' AND `LIBID` = '" + searchArray[rowIndex][6] +"';");
 						if (deletedRows != 1) {
 							JOptionPane.showMessageDialog(null, "Failed to remove reservation");
 							return;
 						}
 
-						int insertedRows = m.execUpdate("INSERT INTO BORROWS(`READERID`, `DOCID`, `COPYNO`, `LIBID`, `BDTIME`, `RDTIME`) VALUES('" + readerId + "','" + searchArray[rowIndex][0] + "','" + searchArray[rowIndex][4] + "','" + searchArray[rowIndex][5] +"', NOW(), NULL);");
+						int insertedRows = m.execUpdate("INSERT INTO BORROWS(`READERID`, `DOCID`, `COPYNO`, `LIBID`, `BDTIME`, `RDTIME`) VALUES('" + readerId + "','" + searchArray[rowIndex][0] + "','" + searchArray[rowIndex][5] + "','" + searchArray[rowIndex][6] +"', NOW(), NULL);");
 						if (insertedRows != 1) {
 							JOptionPane.showMessageDialog(null, "Borrow failed!");
 						} else {
@@ -537,13 +537,13 @@ public class SearchResult extends JDialog {
 									// If less than 10. then can borrow. delete from RESERVE and insert into BORROW.
 									if (count < 10) {
 										
-										int deletedRows = m.execUpdate("DELETE FROM RESERVES WHERE `DOCID` = '" + searchArray[rowIndex][0] + "' AND `COPYNO` = '" + searchArray[rowIndex][4] + "' AND `LIBID` = '" + searchArray[rowIndex][5] +"';");
+										int deletedRows = m.execUpdate("DELETE FROM RESERVES WHERE `DOCID` = '" + searchArray[rowIndex][0] + "' AND `COPYNO` = '" + searchArray[rowIndex][5] + "' AND `LIBID` = '" + searchArray[rowIndex][6] +"';");
 										if (deletedRows != 1) {
 											JOptionPane.showMessageDialog(null, "Failed to remove reservation");
 											return;
 										}
 										
-										int insertedRows = m.execUpdate("INSERT INTO BORROWS(`READERID`, `DOCID`, `COPYNO`, `LIBID`, `BDTIME`, `RDTIME`) VALUES('" + readerId + "','" + searchArray[rowIndex][0] + "','" + searchArray[rowIndex][4] + "','" + searchArray[rowIndex][5] +"', NOW(), NULL);");
+										int insertedRows = m.execUpdate("INSERT INTO BORROWS(`READERID`, `DOCID`, `COPYNO`, `LIBID`, `BDTIME`, `RDTIME`) VALUES('" + readerId + "','" + searchArray[rowIndex][0] + "','" + searchArray[rowIndex][5] + "','" + searchArray[rowIndex][6] +"', NOW(), NULL);");
 										if (insertedRows != 1) {
 											JOptionPane.showMessageDialog(null, "Borrow failed!");
 										} else {
@@ -613,13 +613,13 @@ public class SearchResult extends JDialog {
 							// If less than 10. then can borrow. delete from RESERVE and insert into BORROW.
 							if (count < 10) {
 								
-								int deletedRows = m.execUpdate("DELETE FROM RESERVES WHERE `DOCID` = '" + searchArray[rowIndex][0] + "' AND `COPYNO` = '" + searchArray[rowIndex][4] + "' AND `LIBID` = '" + searchArray[rowIndex][5] +"';");
+								int deletedRows = m.execUpdate("DELETE FROM RESERVES WHERE `DOCID` = '" + searchArray[rowIndex][0] + "' AND `COPYNO` = '" + searchArray[rowIndex][5] + "' AND `LIBID` = '" + searchArray[rowIndex][6] +"';");
 								if (deletedRows != 1) {
 									JOptionPane.showMessageDialog(null, "Failed to remove reservation");
 									return;
 								}
 								
-								int insertedRows = m.execUpdate("INSERT INTO BORROWS(`READERID`, `DOCID`, `COPYNO`, `LIBID`, `BDTIME`, `RDTIME`) VALUES('" + readerId + "','" + searchArray[rowIndex][0] + "','" + searchArray[rowIndex][4] + "','" + searchArray[rowIndex][5] +"', NOW(), NULL);");
+								int insertedRows = m.execUpdate("INSERT INTO BORROWS(`READERID`, `DOCID`, `COPYNO`, `LIBID`, `BDTIME`, `RDTIME`) VALUES('" + readerId + "','" + searchArray[rowIndex][0] + "','" + searchArray[rowIndex][5] + "','" + searchArray[rowIndex][6] +"', NOW(), NULL);");
 								if (insertedRows != 1) {
 									JOptionPane.showMessageDialog(null, "Borrow failed!");
 								} else {
