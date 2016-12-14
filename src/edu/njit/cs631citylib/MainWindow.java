@@ -69,7 +69,7 @@ public class MainWindow {
 		frmCityLibrary.getContentPane().add(txtCardNumber);
 		txtCardNumber.setColumns(10);
 		
-		JButton btnReaderLogin = new JButton("Login");
+		JButton btnReaderLogin = new JButton("Reader Login");
 		btnReaderLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (txtCardNumber.getText().length() <= 0) {
@@ -87,7 +87,7 @@ public class MainWindow {
 				}
 			}
 		});
-		btnReaderLogin.setBounds(280, 64, 79, 29);
+		btnReaderLogin.setBounds(280, 64, 149, 29);
 		frmCityLibrary.getContentPane().add(btnReaderLogin);
 		
 		JLabel lblCityLibrary = new JLabel("READER");
@@ -103,24 +103,24 @@ public class MainWindow {
 		JLabel lblCityLibrary1 = new JLabel("ADMIN");
 		lblCityLibrary1.setForeground(Color.BLACK);
 		lblCityLibrary1.setBackground(Color.GRAY);
-		lblCityLibrary1.setBounds(38, 129, 71, 16);
+		lblCityLibrary1.setBounds(38, 151, 71, 16);
 		frmCityLibrary.getContentPane().add(lblCityLibrary1);
 		
 		JLabel lblAdminID = new JLabel("ID");
-		lblAdminID.setBounds(38, 149, 90, 16);
+		lblAdminID.setBounds(38, 179, 90, 16);
 		frmCityLibrary.getContentPane().add(lblAdminID);
 		
 		JTextField txtAdminID = new JTextField();
-		txtAdminID.setBounds(125, 149, 130, 26);
+		txtAdminID.setBounds(125, 174, 130, 26);
 		frmCityLibrary.getContentPane().add(txtAdminID);
 		txtAdminID.setColumns(10);
 		
 		JLabel lblAdminPwd = new JLabel("Password");
-		lblAdminPwd.setBounds(38, 179, 90, 16);
+		lblAdminPwd.setBounds(38, 217, 90, 16);
 		frmCityLibrary.getContentPane().add(lblAdminPwd);
 		
 		JTextField txtAdminPwd = new JTextField();
-		txtAdminPwd.setBounds(125, 179, 130, 26);
+		txtAdminPwd.setBounds(125, 207, 130, 26);
 		frmCityLibrary.getContentPane().add(txtAdminPwd);
 		txtAdminPwd.setColumns(10);
 		
@@ -148,7 +148,7 @@ public class MainWindow {
 			}
 			
 		});
-		btnAdminLogin.setBounds(280,179 , 149, 29);
+		btnAdminLogin.setBounds(280,207 , 149, 29);
 		frmCityLibrary.getContentPane().add(btnAdminLogin);
 	}
 
