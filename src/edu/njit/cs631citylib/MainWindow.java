@@ -77,7 +77,7 @@ public class MainWindow {
 					return;
 				}
 
-				ArrayList<ArrayList<Object>> result = m.execQuery("SELECT `READERID`, `RTYPE` FROM `READER` WHERE `READERID` = " + txtCardNumber.getText() + ";");
+				ArrayList<ArrayList<Object>> result = m.execQuery("SELECT `READERID`, `RTYPE` FROM `READER` WHERE `READERID` = '" + txtCardNumber.getText() + "';");
 				if (result == null || result.size() != 1) {
 					JOptionPane.showMessageDialog(null, "Invalid card number");
 				} else {
@@ -136,7 +136,7 @@ public class MainWindow {
 					return;
 				}
 
-				ArrayList<ArrayList<Object>> result = m.execQuery("SELECT 'loginID', 'password' FROM `ADMIN` WHERE loginID = '" + txtAdminID.getText() + "' AND password = '" + txtAdminPwd.getText() + "';");
+				ArrayList<ArrayList<Object>> result = m.execQuery("SELECT `loginID`, `password` FROM `ADMIN` WHERE loginID = '" + txtAdminID.getText() + "' AND password = '" + txtAdminPwd.getText() + "';");
 				if (result == null || result.size() != 1) {
 					System.out.println(result.size());
 					JOptionPane.showMessageDialog(null, "Invalid ID or password");
