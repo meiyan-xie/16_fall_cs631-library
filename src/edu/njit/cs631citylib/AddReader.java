@@ -113,9 +113,19 @@ public class AddReader extends JDialog{
 				String nm = txtReaderName.getText();
 				String ad = txtReaderAdd.getText();
 				
-				m.execUpdate("INSERT INTO READER (READERID, RTYPE, RNAME, ADDRESS) "
-				          +"VALUES ("+ idi + ",'" + txtReaderType.getText() + "','" + txtReaderName.getText() + "','" + txtReaderAdd.getText() +",')");
+				ArrayList<ArrayList<Object>> resultl = m.execQuery("SELECT * FROM `READER` WHERE READERID = '" + txtReaderID.getText() + "';");
+				if(resultl.size()!=0){
+					
+						JOptionPane.showMessageDialog(null, "Reader already exists. CANNOT INSERT");
+					
+					
+				}
 				
+				int afr = m.execUpdate("INSERT INTO READER (READERID, RTYPE, RNAME, ADDRESS) "
+				          +"VALUES ("+ idi + ",'" + txtReaderType.getText() + "','" + txtReaderName.getText() + "','" + txtReaderAdd.getText() +",')");
+				if(afr>0){
+					JOptionPane.showMessageDialog(null, "1 reader inserted to database");
+				}
 				/*ArrayList<ArrayList<Object>> result = m.execQuery("SELECT 'loginID', 'password' FROM `ADMIN` WHERE loginID = '" + txtAdminID.getText() + "' AND password = '" + txtAdminPwd.getText() + "';");
 				if (result == null || result.size() != 1) {
 					System.out.println(result.size());
