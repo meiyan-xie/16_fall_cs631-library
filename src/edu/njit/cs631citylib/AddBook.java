@@ -150,18 +150,23 @@ public AddBook() {
 				ArrayList<ArrayList<Object>> result = m.execQuery("SELECT * FROM `DOCUMENT` WHERE DOCID = '" + txtBookID.getText() + "';");
 				if(result.size() ==0){
 			
-				m.execUpdate("INSERT INTO DOCUMENT (DOCID, TITLE, PDATE, PUBLISHERID) "
+				int afr1 = m.execUpdate("INSERT INTO DOCUMENT (DOCID, TITLE, PDATE, PUBLISHERID) "
 				          +"VALUES ("+ idi + ",'" + txtTitle.getText() + "','" + txtPDate.getText() + "'," + idp +")");
-				m.execUpdate("INSERT INTO BOOK (DOCID, ISBN) "
+				int afr2 = m.execUpdate("INSERT INTO BOOK (DOCID, ISBN) "
 				          +"VALUES ("+ idi + ",'" + txtISBN.getText() + "')" );
+				
+				JOptionPane.showMessageDialog(null, "A new book inserted to document table andbook table.");
+				
+				
 				}
 				
 				
 			    ArrayList<ArrayList<Object>> result1 = m.execQuery("SELECT * FROM `COPY` WHERE DOCID = '" + txtBookID.getText() + "';");
 			    Integer r = result1.size() + 1;
-				m.execUpdate("INSERT INTO COPY (DOCID, COPYNO, LIBID, POSITION) "
+				int afr3 = m.execUpdate("INSERT INTO COPY (DOCID, COPYNO, LIBID, POSITION) "
 				          +"VALUES ("+ idi + "," + r + "," + idl + ",'"+ txtPos.getText() + "')");
 			
+				JOptionPane.showMessageDialog(null, "1 book inserted into COPY Table");
 		}});
 		btnAddBook.setBounds(280, 179, 149, 29);
 		getContentPane().add(btnAddBook);

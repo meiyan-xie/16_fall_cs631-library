@@ -66,7 +66,7 @@ public AddJournal() {
 		getContentPane().add(txtVolume);
 		txtVolume.setColumns(10);
 		
-		JLabel lblIssue = new JLabel("ISSUE");
+		JLabel lblIssue = new JLabel("ISSUE No.");
 		lblIssue.setBounds(38, 309, 90, 16);
 		getContentPane().add(lblIssue);
 		
@@ -190,6 +190,8 @@ public AddJournal() {
 				          +"VALUES ("+ idi + ",'" + txtVolume.getText() + "'," + ide + ")" );
 				m.execUpdate("INSERT INTO JOURNAL_ISSUE (DOCID, ISSUE_NO, SCOPE) "
 				          +"VALUES ("+ idi + ",'" + txtIssue.getText() + "','" + txtScope.getText() + "')" );
+				
+				JOptionPane.showMessageDialog(null, "New journal issue inserted.");
 				}
 				
 				
@@ -197,6 +199,7 @@ public AddJournal() {
 			    Integer r = result1.size() + 1;
 				m.execUpdate("INSERT INTO COPY (DOCID, COPYNO, LIBID, POSITION) "
 				          +"VALUES ("+ idi + "," + r + "," + idl + ",'"+ txtPos.getText() + "')");
+				JOptionPane.showMessageDialog(null, "1 copy of journal inserted into COPY Table");
 			
 		}});
 		btnAddJournal.setBounds(280, 179, 149, 29);

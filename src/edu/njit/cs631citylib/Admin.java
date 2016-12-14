@@ -76,7 +76,7 @@ public class Admin extends JDialog{
 				dialog.setVisible(true);
 				}
 		});
-		btnAddReader.setBounds(38, 64, 79, 29);
+		btnAddReader.setBounds(38, 64, 150, 29);
 		getContentPane().add(btnAddReader);
 			
 	JButton btnAddDocument = new JButton("Add Document");
@@ -87,7 +87,7 @@ public class Admin extends JDialog{
 					dialog.setVisible(true);
 					}	
     });	
-    btnAddDocument.setBounds(120, 64, 79, 29);
+    btnAddDocument.setBounds(200, 64, 150, 29);
 	getContentPane().add(btnAddDocument);
     
     JButton btnSearchDoc = new JButton("Search Document");
@@ -98,7 +98,7 @@ public class Admin extends JDialog{
 					dialog.setVisible(true);
 					}	
     });	
-    btnSearchDoc.setBounds(38, 124, 79, 29);
+    btnSearchDoc.setBounds(38, 124, 150, 29);
 	getContentPane().add(btnSearchDoc);
     
     JButton btnGenerateReport = new JButton("Generate Reports");
@@ -109,7 +109,7 @@ public class Admin extends JDialog{
 					dialog.setVisible(true);
 					}	
     });	
-    btnGenerateReport.setBounds(120, 124, 79, 29);
+    btnGenerateReport.setBounds(200, 124, 150, 29);
 	getContentPane().add(btnGenerateReport);
 		//Search Button
 		/*JButton btnSearch = new JButton("Search");

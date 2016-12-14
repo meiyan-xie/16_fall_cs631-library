@@ -175,7 +175,7 @@ public AddProc() {
 				          +"VALUES ("+ idi + ",'" + txtTitle.getText() + "','" + txtPDate.getText() + "'," + idp +")");
 				m.execUpdate("INSERT INTO PROCEEDINGS (DOCID, CDATE, CLOCATION, CEDITOR) "
 				          +"VALUES ("+ idi + ",'" + txtCName.getText() + "','" + txtCLoc.getText() + "'," + ide + ")" );
-				
+				JOptionPane.showMessageDialog(null, "new procedding inserted into database");
 				}
 				
 				
@@ -183,7 +183,7 @@ public AddProc() {
 			    Integer r = result1.size() + 1;
 				m.execUpdate("INSERT INTO COPY (DOCID, COPYNO, LIBID, POSITION) "
 				          +"VALUES ("+ idi + "," + r + "," + idl + ",'"+ txtPos.getText() + "')");
-			
+				JOptionPane.showMessageDialog(null, "1 proc inserted into COPY Table");
 		}});
 		btnAddProc.setBounds(280, 179, 149, 29);
 		getContentPane().add(btnAddProc);
