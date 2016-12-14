@@ -159,6 +159,28 @@ public AddJournal() {
 				//String ty = txtReaderType.getText();
 				//String nm = txtReaderName.getText();
 				//String ad = txtReaderAdd.getText();
+				
+				ArrayList<ArrayList<Object>> resultl = m.execQuery("SELECT * FROM `BRANCH` WHERE LIBID = '" + txtLID.getText() + "';");
+				if(resultl.size()==0){
+					
+						JOptionPane.showMessageDialog(null, "No BRANCH  WITH THIS ID. CANNOT INSERT");
+					
+					
+				}
+				ArrayList<ArrayList<Object>> resultp = m.execQuery("SELECT * FROM `PUBLISHER` WHERE PUBLISHERID = '" + txtPID.getText() + "';");
+				if(resultp.size()==0){
+					
+						JOptionPane.showMessageDialog(null, "No PUBLISHER  WITH THIS ID. CANNOT INSERT");
+					
+					
+				}
+				ArrayList<ArrayList<Object>> resulte = m.execQuery("SELECT * FROM `CHIEF_EDITOR` WHERE EDITOR_ID = '" + txtEID.getText() + "';");
+				if(resultp.size()==0){
+					
+						JOptionPane.showMessageDialog(null, "No EDITOR  WITH THIS ID. CANNOT INSERT");
+					
+					
+				}
 				ArrayList<ArrayList<Object>> result = m.execQuery("SELECT * FROM `DOCUMENT` WHERE DOCID = '" + txtJournalID.getText() + "';");
 				if(result.size() ==0){
 			
