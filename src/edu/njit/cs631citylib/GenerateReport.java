@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -85,7 +86,13 @@ public GenerateReport() {
 	JButton btnAvFn = new JButton("Print Average Fine per user");
 	btnAvFn.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					AvFn dialog = new AvFn();
+					AvFn dialog = null;
+					try {
+						dialog = new AvFn();
+					} catch (ParseException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 					dialog.setModal(true);
 					dialog.setVisible(true);
 					}	
