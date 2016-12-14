@@ -48,7 +48,7 @@ public class AddReader extends JDialog{
 		getContentPane().setLayout(null);
 		
 		JLabel lblAddReader = new JLabel("Add Reader to Database");
-		lblAddReader.setBounds(74, 78, 53, 31);
+		lblAddReader.setBounds(74, 78, 200, 31);
 		getContentPane().add(lblAddReader);
 		
 		JLabel lblReaderID = new JLabel("ID");
