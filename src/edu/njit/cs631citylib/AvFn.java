@@ -84,15 +84,18 @@ public class AvFn extends JDialog{
 				diff1= diff1 - 20;
 				double diff2 = Math.ceil(diff1);
 				row.add(20*diff2);
-				avg = avg + diff2;
-				avfn = avg / j;
+				avg = avg + 20*diff2;
+				;
+				System.out.println(result2.size());
 				
 			}
 			else{
 				row.add(0.0);
 			}
+			avfn = avg / result2.size();
 			array[i][1] = String.valueOf(avfn);
 		}
+			
 		}
 		//if (borrowResult == null || borrowResult.size() <= 0){
 			//JOptionPane.showMessageDialog(null, "No Borrowed Documents");
