@@ -63,22 +63,25 @@ public class SearchResult extends JDialog {
 		contentPanel.setLayout(null);
 		
 		JLabel lblDocresult = new JLabel("Document search result:");
-		lblDocresult.setBounds(60, 53, 853, 31);
+		lblDocresult.setBounds(23, 33, 853, 31);
 		contentPanel.add(lblDocresult);
 		
 		
-		String[] columnNames = {"DOCID", "TITLE", "PDATE", "PUBLISHERID", "COPYNO", "LIBID", "POSITION", "LIBNAME", "LIBADDRESS"};
+		String[] columnNames = {"DOCID", "TITLE", "PDATE", "PUBLISHERID", "PUBNAME", "COPYNO", "LIBID", "POSITION", "LIBNAME", "LIBADDRESS"};
 		ArrayList<ArrayList<Object>> searchResult = new ArrayList<ArrayList<Object>>();
 		
 		if (searchType == SEARCH_TYPE_ID) {
-			searchResult = m.execQuery("SELECT `D`.`DOCID`, `TITLE`, `PDATE`, `D`.`PUBLISHERID`, `COPYNO`, `C`.`LIBID`, `POSITION`, `LNAME`, `LLOCATION`  FROM `DOCUMENT` D, `PUBLISHER` P, `COPY` C, `BRANCH` B WHERE `D`.`DOCID`=`C`.`DOCID` AND `C`.`LIBID`=`B`.`LIBID` AND `D`.`PUBLISHERID` = `P`.`PUBLISHERID` AND `D`.`DOCID` = '" + searchKeyword + "';");
+			searchResult = m.execQuery("SELECT `D`.`DOCID`, `TITLE`, `PDATE`, `D`.`PUBLISHERID`, `P`.`PUBNAME`, `COPYNO`, `C`.`LIBID`, `POSITION`, `LNAME`, `LLOCATION`  FROM `DOCUMENT` D, `PUBLISHER` P, `COPY` C, `BRANCH` B WHERE `D`.`DOCID`=`C`.`DOCID` AND `C`.`LIBID`=`B`.`LIBID` AND `D`.`PUBLISHERID` = `P`.`PUBLISHERID` AND `D`.`DOCID` = '" + searchKeyword + "';");
 		} else if (searchType == SEARCH_TYPE_TITLE) {
-			searchResult = m.execQuery("SELECT `D`.`DOCID`, `TITLE`, `PDATE`, `D`.`PUBLISHERID`, `COPYNO`, `C`.`LIBID`, `POSITION`, `LNAME`, `LLOCATION`  FROM `DOCUMENT` D, `PUBLISHER` P, `COPY` C, `BRANCH` B WHERE `D`.`DOCID`=`C`.`DOCID` AND `C`.`LIBID`=`B`.`LIBID` AND `D`.`PUBLISHERID` = `P`.`PUBLISHERID` AND `D`.`TITLE` LIKE '%" + searchKeyword + "%';");
+			searchResult = m.execQuery("SELECT `D`.`DOCID`, `TITLE`, `PDATE`, `D`.`PUBLISHERID`, `P`.`PUBNAME`, `COPYNO`, `C`.`LIBID`, `POSITION`, `LNAME`, `LLOCATION`  FROM `DOCUMENT` D, `PUBLISHER` P, `COPY` C, `BRANCH` B WHERE `D`.`DOCID`=`C`.`DOCID` AND `C`.`LIBID`=`B`.`LIBID` AND `D`.`PUBLISHERID` = `P`.`PUBLISHERID` AND `D`.`TITLE` LIKE '%" + searchKeyword + "%';");
 		} else if (searchType == SEARCH_TYPE_PUBLISHER) {
-			searchResult = m.execQuery("SELECT `D`.`DOCID`, `TITLE`, `PDATE`, `D`.`PUBLISHERID`, `COPYNO`, `C`.`LIBID`, `POSITION`, `LNAME`, `LLOCATION`  FROM `DOCUMENT` D, `PUBLISHER` P, `COPY` C, `BRANCH` B WHERE `D`.`DOCID`=`C`.`DOCID` AND `C`.`LIBID`=`B`.`LIBID` AND `D`.`PUBLISHERID` = `P`.`PUBLISHERID` AND `P`.`PUBNAME` LIKE '%" + searchKeyword + "%';");
+			searchResult = m.execQuery("SELECT `D`.`DOCID`, `TITLE`, `PDATE`, `D`.`PUBLISHERID`, `P`.`PUBNAME`, `COPYNO`, `C`.`LIBID`, `POSITION`, `LNAME`, `LLOCATION`  FROM `DOCUMENT` D, `PUBLISHER` P, `COPY` C, `BRANCH` B WHERE `D`.`DOCID`=`C`.`DOCID` AND `C`.`LIBID`=`B`.`LIBID` AND `D`.`PUBLISHERID` = `P`.`PUBLISHERID` AND `P`.`PUBNAME` LIKE '%" + searchKeyword + "%';");
 		}
 		
-		if (searchResult == null || searchResult.size() <= 0) return;
+		if (searchResult == null || searchResult.size() <= 0) {
+			JOptionPane.showMessageDialog(null, "No Search result ^_^");
+			return;
+		}
 
 		Object[][] searchArray = new Object[searchResult.size()][];
 		for (int i = 0; i < searchResult.size(); i++) {
@@ -89,7 +92,7 @@ public class SearchResult extends JDialog {
 		DefaultTableModel tm = new DefaultTableModel(searchArray, columnNames);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(60, 96, 871, 344);
+		scrollPane.setBounds(23, 76, 959, 397);
 		contentPanel.add(scrollPane);
 		
 		tableDocSearchResult = new JTable();
@@ -361,7 +364,7 @@ public class SearchResult extends JDialog {
 				}			
 			}
 		});
-		btnReserve.setBounds(814, 467, 117, 29);
+		btnReserve.setBounds(865, 503, 117, 29);
 		contentPanel.add(btnReserve);
 		
 		
@@ -631,7 +634,7 @@ public class SearchResult extends JDialog {
 				}			
 			}
 		});
-		btnBorrow.setBounds(637, 467, 117, 29);
+		btnBorrow.setBounds(707, 503, 117, 29);
 		contentPanel.add(btnBorrow);
 
 	}
