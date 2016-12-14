@@ -77,16 +77,16 @@ public class AdminSearchDoc extends JDialog{
 			
 		}
 		
-		String[][] array = new String[2][4];
-		array[0][0] = columnNames[0];
-		array[0][1] = columnNames[1];
-		array[0][2] = columnNames[2];
-		array[0][3] = columnNames[3];
+		String[][] array = new String[1][4];
+		//array[0][0] = columnNames[0];
+		//array[0][1] = columnNames[1];
+		//array[0][2] = columnNames[2];
+		//array[0][3] = columnNames[3];
 		
-		array[1][0] = idd.toString();
-		array[1][1] = cpn.toString();
-		array[1][2] = idl.toString();
-		array[1][3] = status;
+		array[0][0] = idd.toString();
+		array[0][1] = cpn.toString();
+		array[0][2] = idl.toString();
+		array[0][3] = status;
 		
         DefaultTableModel tm = new DefaultTableModel(array, columnNames);
 		
