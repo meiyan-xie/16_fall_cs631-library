@@ -157,7 +157,7 @@ public AddProc() {
 				m.execUpdate("INSERT INTO DOCUMENT (DOCID, TITLE, PDATE, PUBLISHERID) "
 				          +"VALUES ("+ idi + ",'" + txtTitle.getText() + "','" + txtPDate.getText() + "'," + idp +")");
 				m.execUpdate("INSERT INTO PROCEEDINGS (DOCID, CDATE, CLOCATION, CEDITOR) "
-				          +"VALUES ("+ idi + ",'" + txtCName.getText() + "','" + txtCName.getText() + "'," + ide + ")" );
+				          +"VALUES ("+ idi + ",'" + txtCName.getText() + "','" + txtCLoc.getText() + "'," + ide + ")" );
 				
 				}
 				
