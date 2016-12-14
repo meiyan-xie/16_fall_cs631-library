@@ -171,7 +171,7 @@ public class SearchResult extends JDialog {
 							if (insertedRows != 1) {
 								JOptionPane.showMessageDialog(null, "Reserve failed!");
 							} else {
-								JOptionPane.showMessageDialog(null, "Reserve seccess!");
+								JOptionPane.showMessageDialog(null, "Reserve success!");
 							}
 						} else {
 						// If more than 10, cannot reserve.
@@ -201,7 +201,7 @@ public class SearchResult extends JDialog {
 						if (insertedRows != 1) {
 							JOptionPane.showMessageDialog(null, "Reserve failed!");
 						} else {
-							JOptionPane.showMessageDialog(null, "Reserve seccess!");
+							JOptionPane.showMessageDialog(null, "Reserve success!");
 						}
 					} else {
 					// If not himself reserved this copy, then check the if it is expired.
@@ -278,7 +278,7 @@ public class SearchResult extends JDialog {
 										if (insertedRows != 1) {
 											JOptionPane.showMessageDialog(null, "Reserve failed!");
 										} else {
-											JOptionPane.showMessageDialog(null, "Reserve seccess!");
+											JOptionPane.showMessageDialog(null, "Reserve success!");
 										}
 									} else {
 									// If more than 10, cannot reserve.
@@ -353,7 +353,7 @@ public class SearchResult extends JDialog {
 								if (insertedRows != 1) {
 									JOptionPane.showMessageDialog(null, "Reserve failed!");
 								} else {
-									JOptionPane.showMessageDialog(null, "Reserve seccess!");
+									JOptionPane.showMessageDialog(null, "Reserve success!");
 								}
 							} else {
 							// If more than 10, cannot borrow.
@@ -439,7 +439,7 @@ public class SearchResult extends JDialog {
 							if (insertedRows != 1) {
 								JOptionPane.showMessageDialog(null, "Borrow failed!");
 							} else {
-								JOptionPane.showMessageDialog(null, "Borrow seccess!");
+								JOptionPane.showMessageDialog(null, "Borrow success!");
 							}
 						} else {
 						// If more than 10, cannot borrow.
@@ -469,7 +469,7 @@ public class SearchResult extends JDialog {
 						if (insertedRows != 1) {
 							JOptionPane.showMessageDialog(null, "Borrow failed!");
 						} else {
-							JOptionPane.showMessageDialog(null, "Borrow seccess!");
+							JOptionPane.showMessageDialog(null, "Borrow success!");
 						}
 					} else {
 					// If not himself reserved this copy, then check the if it is expired.
@@ -547,7 +547,7 @@ public class SearchResult extends JDialog {
 										if (insertedRows != 1) {
 											JOptionPane.showMessageDialog(null, "Borrow failed!");
 										} else {
-											JOptionPane.showMessageDialog(null, "Borrow seccess!");
+											JOptionPane.showMessageDialog(null, "Borrow success!");
 										}
 									} else {
 									// If more than 10, cannot borrow.
@@ -623,7 +623,7 @@ public class SearchResult extends JDialog {
 								if (insertedRows != 1) {
 									JOptionPane.showMessageDialog(null, "Borrow failed!");
 								} else {
-									JOptionPane.showMessageDialog(null, "Borrow seccess!");
+									JOptionPane.showMessageDialog(null, "Borrow success!");
 								}
 							} else {
 							// If more than 10, cannot borrow.
