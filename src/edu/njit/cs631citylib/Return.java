@@ -18,12 +18,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.JLabel;
 
 public class Return extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private JTable tableDocBorrowResult;
 	private JButton btnReturn;
+	private JLabel lblNewLabel;
 	
 	/**
 	 * Launch the application.
@@ -50,26 +52,33 @@ public class Return extends JDialog {
 		ArrayList<ArrayList<Object>> borrowResult = new ArrayList<ArrayList<Object>>();
 		borrowResult = m.execQuery("SELECT `BORNUMBER`, `READERID`, `DOCID`, `COPYNO`, `LIBID`, `BDTIME`, `RDTIME` FROM `BORROWS` WHERE `READERID` = " + cardNumber + ";");
 
-		Object[][] array = new Object[borrowResult.size()][];
+		Object[][] array1 = new Object[borrowResult.size()][];
+		
 		int j = 0;
 		for (int i = 0; i < borrowResult.size(); i++) {
 			ArrayList<Object> row = borrowResult.get(i);
 			Timestamp b = (Timestamp)row.get(6);
 				if (b == null){
 				row.remove(6);
-				array[j] = row.toArray();
+				array1[j] = row.toArray();
 				j = j + 1;
 				}
 			else{
 				continue;
 				}
 		}
+		
+		Object[][] array = new Object[j][];
+		for (int i = 0; i < j; i++){
+			array[i] = array1[i];
+		}
+		
 		List <Integer>list1 = new ArrayList<Integer>();
 		for (int i = 0; i < j ; i++){
 			list1.add(i);
-		}
+		}		
 		
-		if (borrowResult == null || borrowResult.size() <= 0){
+		if (borrowResult == null || borrowResult.size()<= 0||array.length == 0){
 			JOptionPane.showMessageDialog(null, "No Borrowed Documents");
 		}
 
@@ -98,7 +107,8 @@ public class Return extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				
 				int rowIndex = tableDocBorrowResult.getSelectedRow();
-				if (rowIndex<0){
+				
+				if (rowIndex<0||rowIndex>list1.size()){
 					JOptionPane.showMessageDialog(null, "Please select a book.");
 					return;
 				}
@@ -132,6 +142,10 @@ public class Return extends JDialog {
 		});
 		btnReturn.setBounds(1180, 529, 117, 29);
 		contentPanel.add(btnReturn);
+		
+		lblNewLabel = new JLabel("Borrowed Books:");
+		lblNewLabel.setBounds(29, 10, 117, 16);
+		contentPanel.add(lblNewLabel);
 	}		
 		
 		

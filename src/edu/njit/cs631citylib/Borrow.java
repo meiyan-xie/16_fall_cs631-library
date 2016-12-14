@@ -14,6 +14,7 @@ import javax.swing.table.DefaultTableModel;
 
 import java.lang.*;
 import javax.swing.JButton;
+import java.awt.Label;
 
 public class Borrow extends JDialog {
 
@@ -93,6 +94,10 @@ public class Borrow extends JDialog {
 		tableDocBorrowResult = new JTable();
 		scrollPane.setViewportView(tableDocBorrowResult);
 		tableDocBorrowResult.setModel(tm);
+		
+		Label label = new Label("Borrowed Books:");
+		label.setBounds(6, 10, 187, 35);
+		contentPanel.add(label);
 
 	}
 }

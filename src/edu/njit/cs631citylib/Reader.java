@@ -50,7 +50,7 @@ public class Reader extends JDialog {
 		lblNewLabel.setBounds(226, 30, 95, 50);
 		getContentPane().add(lblNewLabel);
 		
-		JLabel lblReadId = new JLabel("READ ID: "+cardNumber+"");
+		JLabel lblReadId = new JLabel("READER ID: "+cardNumber+"");
 		lblReadId.setBounds(16, 6, 136, 16);
 		getContentPane().add(lblReadId);
 		

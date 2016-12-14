@@ -16,6 +16,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 
 public class Reserve extends JDialog {
 
@@ -58,13 +60,15 @@ public class Reserve extends JDialog {
 		
 		//Calculate yesterday 6PM 
 		long y = cl.getTimeInMillis() - 86400000;
-		
+
+			
 		Object[][] array = new Object[reserveResult.size()][];
 		int j = 0;
 		for (int i = 0; i < reserveResult.size(); i++) {
 			ArrayList<Object> row = reserveResult.get(i);
 			//get reserve time
 			Timestamp r = (Timestamp)row.get(5);
+			
 			//Check if the reserve time is less than yesterday 6PM
 			if (r.getTime()-y > 0){
 				//Check if current time is before 6PM
@@ -82,7 +86,7 @@ public class Reserve extends JDialog {
 				}
 			}		
 		}
-
+	
 		if (reserveResult == null || reserveResult.size() <= 0||array[0] == null){
 			JOptionPane.showMessageDialog(null, "No Reserved Documents");
 		}
@@ -104,6 +108,12 @@ public class Reserve extends JDialog {
 		tableDocReserveResult = new JTable();
 		scrollPane.setViewportView(tableDocReserveResult);
 		tableDocReserveResult.setModel(tm);
+		
+		JLabel lblNewLabel = new JLabel("Reserved Books:");
+		lblNewLabel.setBounds(43, 24, 200, 36);
+		contentPanel.add(lblNewLabel);
+		
+		
 	
 	}
 }
