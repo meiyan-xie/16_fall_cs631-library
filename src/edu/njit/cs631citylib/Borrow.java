@@ -38,6 +38,7 @@ public class Borrow extends JDialog {
 	 * Create the dialog.
 	 */
 	public Borrow(String cardNumber) {
+		setTitle("City Library");
 		
 		DBManager m = DBManager.getInstance();
 		
@@ -86,7 +87,7 @@ public class Borrow extends JDialog {
 		contentPanel.setLayout(null);
 	
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(26, 51, 1308, 480);
+		scrollPane.setBounds(6, 51, 1308, 480);
 		contentPanel.add(scrollPane);
 	
 		tableDocBorrowResult = new JTable();

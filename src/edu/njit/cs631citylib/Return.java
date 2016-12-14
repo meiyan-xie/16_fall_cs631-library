@@ -44,6 +44,7 @@ public class Return extends JDialog {
 	 * Create the dialog.
 	 */
 	public Return(String cardNumber) {
+		setTitle("City Library");
 		DBManager m = DBManager.getInstance();
 		String[] columnNames = {"BorrowNo", "ReaderId", "DocId", "CopyNo", "LibId", "BDTime"};
 		ArrayList<ArrayList<Object>> borrowResult = new ArrayList<ArrayList<Object>>();
@@ -83,7 +84,7 @@ public class Return extends JDialog {
 		contentPanel.setLayout(null);
 	
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(52, 37, 1245, 480);
+		scrollPane.setBounds(29, 38, 1245, 480);
 		contentPanel.add(scrollPane);
 	
 		tableDocBorrowResult = new JTable();
@@ -95,8 +96,12 @@ public class Return extends JDialog {
 		
 		btnReturn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			
+				
 				int rowIndex = tableDocBorrowResult.getSelectedRow();
+				if (rowIndex<0){
+					JOptionPane.showMessageDialog(null, "Please select a book.");
+					return;
+				}
 				int index = list1.get(rowIndex);
 				
 				long time = System.currentTimeMillis();
@@ -117,13 +122,13 @@ public class Return extends JDialog {
 				if (diff2 == 0){
 					JOptionPane.showMessageDialog(null, "Return Sucess. Books are returned on time.");}
 				else {
-					JOptionPane.showMessageDialog(null, "Return Sucess. You are fined '"+ diff2 +"'cents.");
+					JOptionPane.showMessageDialog(null, "Return Sucess. You are fined "+ diff2 +"cents.");
 				}
 		        // remove selected row from the model
 				tm.removeRow(rowIndex);	
 				list1.remove(rowIndex);
 				
-				}	
+				}
 		});
 		btnReturn.setBounds(1180, 529, 117, 29);
 		contentPanel.add(btnReturn);

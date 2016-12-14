@@ -37,6 +37,7 @@ public class Reserve extends JDialog {
 	 * Create the dialog.
 	 */
 	public Reserve(String cardNumber) {
+		setTitle("City Library");
 		
 		DBManager m = DBManager.getInstance();
 		
@@ -70,11 +71,19 @@ public class Reserve extends JDialog {
 				if (b2 - cl.getTimeInMillis()<0){
 					array[j] = row.toArray();
 					j = j+1;
-				}	
+				}
+				//If current time is after 6PM
+				if (b2 - cl.getTimeInMillis()>=0){
+					//If reserve time is after 6PM
+					if (r.getTime() - cl.getTimeInMillis()>0 ){
+						array[j] = row.toArray();
+						j = j+1;
+					}
+				}
 			}		
 		}
 
-		if (reserveResult == null || reserveResult.size() <= 0){
+		if (reserveResult == null || reserveResult.size() <= 0||array[0] == null){
 			JOptionPane.showMessageDialog(null, "No Reserved Documents");
 		}
 
@@ -89,7 +98,7 @@ public class Reserve extends JDialog {
 		contentPanel.setLayout(null);
 	
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(16, 83, 1008, 404);
+		scrollPane.setBounds(42, 72, 966, 391);
 		contentPanel.add(scrollPane);
 	
 		tableDocReserveResult = new JTable();

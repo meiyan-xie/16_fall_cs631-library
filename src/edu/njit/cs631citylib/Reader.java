@@ -29,6 +29,7 @@ public class Reader extends JDialog {
 	 * Create the frame.
 	 */
 	public Reader(String cardNumber) {
+		setTitle("City Library");
 			
 		getContentPane().setBackground(Color.WHITE);
 		//Connect to Database
@@ -49,7 +50,7 @@ public class Reader extends JDialog {
 		lblNewLabel.setBounds(226, 30, 95, 50);
 		getContentPane().add(lblNewLabel);
 		
-		JLabel lblReadId = new JLabel("READ ID: '"+cardNumber+"'");
+		JLabel lblReadId = new JLabel("READ ID: "+cardNumber+"");
 		lblReadId.setBounds(16, 6, 136, 16);
 		getContentPane().add(lblReadId);
 		
@@ -81,10 +82,11 @@ public class Reader extends JDialog {
 					JOptionPane.showMessageDialog(null, "Enter a valid value");
 					return;
 				}
-
+				
 				int searchType;
 				if (radioButtonTitle.isSelected()) {
 					searchType = SearchResult.SEARCH_TYPE_TITLE;
+					
 				} else if (radioButtonPublisher.isSelected()) {
 					searchType = SearchResult.SEARCH_TYPE_PUBLISHER ;
 				} else {
@@ -116,15 +118,15 @@ public class Reader extends JDialog {
 		getContentPane().add(lblReaderProfile);
 		
 		JButton btnNewButtonBorrow = new JButton("Borrowed Books");
-		btnNewButtonBorrow.setBounds(141, 246, 136, 29);
+		btnNewButtonBorrow.setBounds(127, 246, 136, 29);
 		getContentPane().add(btnNewButtonBorrow);
 		
 		JButton btnNewButtonReserve = new JButton("Reserved Books");
-		btnNewButtonReserve.setBounds(296, 246, 130, 29);
+		btnNewButtonReserve.setBounds(277, 246, 130, 29);
 		getContentPane().add(btnNewButtonReserve);
 		
 		JButton btnNewButtonReturn = new JButton("Return");
-		btnNewButtonReturn.setBounds(438, 246, 114, 29);
+		btnNewButtonReturn.setBounds(428, 246, 114, 29);
 		getContentPane().add(btnNewButtonReturn);
 		
 		btnNewButtonReturn.addActionListener(new ActionListener() {
